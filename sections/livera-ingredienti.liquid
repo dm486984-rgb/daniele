@@ -57,17 +57,23 @@
     display: flex;
     flex-direction: column;
   }
-  .lv-ing-card .lv-ing-media,
-  .lv-ing-card .lv-ing-media img,
-  .lv-ing-card .lv-ing-media svg {
+  .lv-ing-card .lv-ing-media {
+    position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    object-fit: cover;
-    display: block;
-  }
-  .lv-ing-card .lv-ing-media {
+    overflow: hidden;
     margin-bottom: 20px;
     background: #f4effa;
+  }
+  .lv-ing-card .lv-ing-media img,
+  .lv-ing-card .lv-ing-media svg {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none;
+    object-fit: cover;
+    display: block;
   }
   .lv-ing-card h3 {
     font-size: 20px;
