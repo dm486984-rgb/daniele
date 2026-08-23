@@ -1,8 +1,8 @@
 <div class="lvu lvu--{{ section.id }}">
   <div class="lvu__wrap">
 
-    {% if section.settings.title != blank %}
-      <h2 class="lvu__title">{{ section.settings.title }}</h2>
+    {% if section.settings.title != blank or section.settings.title_accent != blank %}
+      <h2 class="lvu__title">{% if section.settings.title_accent != blank %}<span class="lvu__title-accent">{{ section.settings.title_accent }}</span> {% endif %}{{ section.settings.title }}</h2>
     {% endif %}
 
     <div class="lvu__grid">
@@ -40,6 +40,15 @@
     font-size: 40px; font-weight: 500; text-align: center; line-height: 1.15;
     color: #111111; margin: 0 0 44px;
   }
+  .lvu--{{ section.id }} .lvu__title-accent {
+    background: linear-gradient(90deg, #8a2be2, #c77dff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #8a2be2; /* fallback */
+    -webkit-text-stroke-width: 0;
+    filter: drop-shadow(0 0 18px rgba(160, 84, 236, 0.45));
+  }
 
   .lvu--{{ section.id }} .lvu__grid {
     display: grid;
@@ -74,7 +83,8 @@
   "name": "Livèra · Come si usa",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "title", "label": "Titolo", "default": "Semplicemente liscia e senza peli" },
+    { "type": "text", "id": "title_accent", "label": "Titolo — parola in viola (all'inizio)", "default": "93%" },
+    { "type": "text", "id": "title", "label": "Titolo — resto della frase", "default": "di ricrescita in meno. Ecco come." },
     { "type": "range", "id": "max_width", "label": "Larghezza su desktop", "min": 180, "max": 1180, "step": 10, "unit": "px", "default": 220 },
     { "type": "range", "id": "max_width_mobile", "label": "Larghezza su mobile", "min": 200, "max": 600, "step": 10, "unit": "px", "default": 360 },
     { "type": "header", "content": "Riquadro" },
