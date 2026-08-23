@@ -36,8 +36,9 @@
   }
     .lvu--{{ section.id }} .lvu__wrap { max-width: {{ section.settings.max_width }}px; margin: 0 auto; }
   .lvu--{{ section.id }} .lvu__title {
-    font-size: 27px; font-weight: 500; text-align: center; line-height: 1.25;
-    color: {{ section.settings.title_color }}; margin: 0 0 44px;
+    font-family: var(--font-body-family, inherit);
+    font-size: 40px; font-weight: 500; text-align: center; line-height: 1.15;
+    color: #111111; margin: 0 0 44px;
   }
 
   .lvu--{{ section.id }} .lvu__grid {
@@ -63,7 +64,7 @@
   @media (max-width: 749px) {
     .lvu--{{ section.id }} { padding-left: 16px; padding-right: 16px; }
     .lvu--{{ section.id }} .lvu__wrap { max-width: {{ section.settings.max_width_mobile }}px; }
-    .lvu--{{ section.id }} .lvu__title { font-size: 22px; margin-bottom: 34px; }
+    .lvu--{{ section.id }} .lvu__title { font-size: 30px; margin-bottom: 34px; }
     .lvu--{{ section.id }} .lvu__grid { grid-template-columns: 1fr; gap: 16px; }
   }
 </style>
