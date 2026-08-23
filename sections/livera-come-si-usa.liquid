@@ -29,7 +29,9 @@
 
 <style>
   .lvu--{{ section.id }} {
-    background: linear-gradient(180deg, #FFFFFF 0%, {{ section.settings.bg_color }} 100%);
+    background:
+      radial-gradient(ellipse 900px 420px at 50% 100%, rgba(138, 43, 226, 0.10), transparent 70%),
+      {{ section.settings.bg_color }};
     padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
   }
     .lvu--{{ section.id }} .lvu__wrap { max-width: 260px; margin: 0 auto; }
