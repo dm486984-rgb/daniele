@@ -71,18 +71,16 @@
   .lv-ing-intro p { margin: 0; }
   .lv-ing-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
   }
   .lv-ing-card {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
+    flex-direction: column;
     background: #ffffff;
     border: 1px solid rgba(138, 43, 226, 0.12);
     border-radius: 18px;
-    padding: 18px;
+    padding: 16px 16px 24px;
     box-shadow: 0 12px 32px rgba(96, 44, 158, 0.08);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
@@ -92,17 +90,12 @@
   }
   .lv-ing-card .lv-ing-media {
     position: relative;
-    flex: 0 0 170px;
-    width: 170px;
+    width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
+    margin-bottom: 18px;
     background: #f4effa;
     border-radius: 12px;
-    align-self: flex-start;
-  }
-  .lv-ing-card .lv-ing-body {
-    flex: 1;
-    min-width: 0;
   }
   .lv-ing-card .lv-ing-media img,
   .lv-ing-card .lv-ing-media svg {
@@ -148,16 +141,6 @@
     .lv-ing-card {
       flex: 0 0 80%;
       scroll-snap-align: start;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0;
-      padding: 16px 16px 24px;
-    }
-    .lv-ing-card .lv-ing-media {
-      flex: none;
-      width: 100%;
-      margin-bottom: 16px;
-      align-self: auto;
     }
   }
 </style>
@@ -190,10 +173,8 @@
               {{ 'image' | placeholder_svg_tag }}
             {% endif %}
           </div>
-          <div class="lv-ing-body">
-            <h3>{{ block.settings.heading }}</h3>
-            <p>{{ block.settings.text }}</p>
-          </div>
+          <h3>{{ block.settings.heading }}</h3>
+          <p>{{ block.settings.text }}</p>
         </div>
       {% endfor %}
     </div>
