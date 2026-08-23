@@ -3,7 +3,6 @@
 
     {% if section.settings.title != blank %}
       <h2 class="lvu__title">{{ section.settings.title }}</h2>
-      <div class="lvu__divider"></div>
     {% endif %}
 
     <div class="lvu__grid">
@@ -30,27 +29,13 @@
 
 <style>
   .lvu--{{ section.id }} {
-    background:
-      radial-gradient(ellipse 900px 420px at 50% 0%, rgba(138, 43, 226, 0.10), transparent 70%),
-      {{ section.settings.bg_color }};
+    background: {{ section.settings.bg_color }};
     padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
   }
-  .lvu--{{ section.id }} .lvu__wrap { max-width: {{ section.settings.max_width }}px; margin: 0 auto; }
+    .lvu--{{ section.id }} .lvu__wrap { max-width: 260px; margin: 0 auto; }
   .lvu--{{ section.id }} .lvu__title {
     font-size: 27px; font-weight: 500; text-align: center; line-height: 1.25;
-    margin: 0 0 16px;
-    background: linear-gradient(90deg, {{ section.settings.title_color }} 35%, #8a2be2 75%, #c77dff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: {{ section.settings.title_color }}; /* fallback */
-    filter: drop-shadow(0 0 16px rgba(160, 84, 236, 0.25));
-  }
-  .lvu--{{ section.id }} .lvu__divider {
-    width: 64px; height: 3px; margin: 0 auto 36px;
-    border-radius: 2px;
-    background: linear-gradient(90deg, #8a2be2, #c77dff);
-    opacity: 0.6;
+    color: {{ section.settings.title_color }}; margin: 0 0 44px;
   }
 
   .lvu--{{ section.id }} .lvu__grid {
@@ -63,9 +48,7 @@
     position: relative; overflow: hidden;
     border-radius: {{ section.settings.radius }}px;
     aspect-ratio: {{ section.settings.ratio }};
-    background: #f4effa;
-    border: 1px solid rgba(138, 43, 226, 0.12);
-    box-shadow: 0 12px 32px rgba(96, 44, 158, 0.10);
+    background: #E7E3DE;
   }
   .lvu--{{ section.id }} .lvu__media video,
   .lvu--{{ section.id }} .lvu__media img,
@@ -78,8 +61,7 @@
   @media (max-width: 749px) {
     .lvu--{{ section.id }} { padding-left: 16px; padding-right: 16px; }
     .lvu--{{ section.id }} .lvu__wrap { max-width: {{ section.settings.max_width_mobile }}px; }
-    .lvu--{{ section.id }} .lvu__title { font-size: 22px; margin-bottom: 14px; }
-    .lvu--{{ section.id }} .lvu__divider { margin-bottom: 28px; }
+    .lvu--{{ section.id }} .lvu__title { font-size: 22px; margin-bottom: 34px; }
     .lvu--{{ section.id }} .lvu__grid { grid-template-columns: 1fr; gap: 16px; }
   }
 </style>
@@ -90,7 +72,7 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "title", "label": "Titolo", "default": "Semplicemente liscia e senza peli" },
-    { "type": "range", "id": "max_width", "label": "Larghezza su desktop", "min": 180, "max": 1180, "step": 10, "unit": "px", "default": 260 },
+    { "type": "range", "id": "max_width", "label": "Larghezza su desktop", "min": 180, "max": 1180, "step": 10, "unit": "px", "default": 220 },
     { "type": "range", "id": "max_width_mobile", "label": "Larghezza su mobile", "min": 200, "max": 600, "step": 10, "unit": "px", "default": 360 },
     { "type": "header", "content": "Riquadro" },
     {
@@ -103,10 +85,10 @@
         { "value": "4 / 3", "label": "Orizzontale 4:3" }
       ]
     },
-    { "type": "range", "id": "radius", "label": "Angoli arrotondati", "min": 0, "max": 30, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "radius", "label": "Angoli arrotondati", "min": 0, "max": 30, "step": 2, "unit": "px", "default": 4 },
     { "type": "header", "content": "Colori e spazi" },
-    { "type": "color", "id": "bg_color", "label": "Sfondo sezione", "default": "#F6F1FC" },
-    { "type": "color", "id": "title_color", "label": "Colore titolo (parte iniziale)", "default": "#17111F" },
+    { "type": "color", "id": "bg_color", "label": "Sfondo sezione", "default": "#FAF7FE" },
+    { "type": "color", "id": "title_color", "label": "Colore titolo", "default": "#17111F" },
     { "type": "range", "id": "padding_top", "label": "Spazio sopra", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 48 },
     { "type": "range", "id": "padding_bottom", "label": "Spazio sotto", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 48 }
   ],
