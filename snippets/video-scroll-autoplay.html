@@ -1,0 +1,73 @@
+<!--
+  Video: autoplay solo quando la sezione entra in vista
+  =====================================================
+  Da incollare nella product page (sezione "Custom Code" / "HTML personalizzato"
+  del page builder, oppure in theme.liquid subito prima di </body>).
+
+  Come funziona:
+  - Blocca l'autoplay iniziale di tutti i <video> della pagina.
+  - Usa IntersectionObserver: quando almeno il 50% del video è visibile
+    nello schermo, il video parte (muto, come richiesto dai browser mobile).
+  - Quando il cliente scorre oltre e il video esce dallo schermo, si mette
+    in pausa; rientrando in vista riparte.
+-->
+
+<style>
+  /* Facoltativo: transizione morbida quando il video parte */
+  .video-scroll-play {
+    opacity: 0.85;
+    transition: opacity 0.4s ease;
+  }
+  .video-scroll-play.is-playing {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  (function () {
+    function initScrollVideos() {
+      var videos = document.querySelectorAll('video');
+      if (!videos.length) return;
+
+      // Fallback per browser molto vecchi: lascia tutto com'è
+      if (!('IntersectionObserver' in window)) return;
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var video = entry.target;
+          if (entry.isIntersecting) {
+            video.muted = true;          // obbligatorio per l'autoplay su mobile
+            video.playsInline = true;
+            var p = video.play();
+            if (p && p.catch) p.catch(function () {});
+            video.classList.add('is-playing');
+          } else {
+            video.pause();
+            video.classList.remove('is-playing');
+          }
+        });
+      }, {
+        threshold: 0.5   // parte quando il 50% del video è visibile; usa 0.25 per farlo partire prima
+      });
+
+      videos.forEach(function (video) {
+        // Disattiva l'autoplay impostato dal tema/page builder
+        video.removeAttribute('autoplay');
+        video.autoplay = false;
+        video.pause();
+        video.classList.add('video-scroll-play');
+        observer.observe(video);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initScrollVideos);
+    } else {
+      initScrollVideos();
+    }
+
+    // I page builder (GemPages/PageFly ecc.) a volte inseriscono i video dopo
+    // il caricamento: riprova dopo 1,5 secondi per agganciare anche quelli.
+    setTimeout(initScrollVideos, 1500);
+  })();
+</script>
