@@ -1,8 +1,12 @@
 <!--
-  Video: autoplay solo quando la sezione entra in vista
-  =====================================================
-  Da incollare nella product page (sezione "Custom Code" / "HTML personalizzato"
-  del page builder, oppure in theme.liquid subito prima di </body>).
+  Video: autoplay solo quando la sezione entra in vista (tema Shrine / Dawn)
+  ==========================================================================
+  Versione globale: agisce su TUTTI i video della pagina.
+  Da incollare in una sezione "Liquid personalizzato" (Custom Liquid) della
+  product page, oppure in layout/theme.liquid subito prima di </body>.
+
+  Se vuoi agire solo su una sezione specifica, usa invece la versione già
+  integrata in sections/livera-come-si-usa.liquid.
 
   Come funziona:
   - Blocca l'autoplay iniziale di tutti i <video> della pagina.
@@ -10,13 +14,15 @@
     nello schermo, il video parte (muto, come richiesto dai browser mobile).
   - Quando il cliente scorre oltre e il video esce dallo schermo, si mette
     in pausa; rientrando in vista riparte.
+  - Un MutationObserver aggancia anche i video che Shrine inserisce in
+    ritardo (deferred media / sezioni caricate dinamicamente).
 -->
 
 <style>
   /* Facoltativo: transizione morbida quando il video parte */
   .video-scroll-play {
-    opacity: 0.85;
-    transition: opacity 0.4s ease;
+    opacity: 0.9;
+    transition: opacity 0.35s ease;
   }
   .video-scroll-play.is-playing {
     opacity: 1;
@@ -25,49 +31,58 @@
 
 <script>
   (function () {
-    function initScrollVideos() {
-      var videos = document.querySelectorAll('video');
-      if (!videos.length) return;
+    // Browser senza IntersectionObserver: lascia i video come sono
+    if (!('IntersectionObserver' in window)) return;
 
-      // Fallback per browser molto vecchi: lascia tutto com'è
-      if (!('IntersectionObserver' in window)) return;
-
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          var video = entry.target;
-          if (entry.isIntersecting) {
-            video.muted = true;          // obbligatorio per l'autoplay su mobile
-            video.playsInline = true;
-            var p = video.play();
-            if (p && p.catch) p.catch(function () {});
-            video.classList.add('is-playing');
-          } else {
-            video.pause();
-            video.classList.remove('is-playing');
-          }
-        });
-      }, {
-        threshold: 0.5   // parte quando il 50% del video è visibile; usa 0.25 per farlo partire prima
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var video = entry.target;
+        if (entry.isIntersecting) {
+          video.muted = true;          // obbligatorio per l'autoplay su mobile
+          video.playsInline = true;
+          var p = video.play();
+          if (p && p.catch) p.catch(function () {});
+          video.classList.add('is-playing');
+        } else {
+          video.pause();
+          video.classList.remove('is-playing');
+        }
       });
+    }, {
+      threshold: 0.5,   // parte quando il 50% del video è visibile; usa 0.25 per farlo partire prima
+      rootMargin: '0px 0px -10% 0px'
+    });
 
-      videos.forEach(function (video) {
-        // Disattiva l'autoplay impostato dal tema/page builder
-        video.removeAttribute('autoplay');
-        video.autoplay = false;
-        video.pause();
-        video.classList.add('video-scroll-play');
-        observer.observe(video);
-      });
+    function attach(video) {
+      // Non agganciare due volte lo stesso video
+      if (video.dataset.scrollPlay === 'on') return;
+      video.dataset.scrollPlay = 'on';
+
+      // Disattiva l'autoplay impostato dal tema
+      video.removeAttribute('autoplay');
+      video.autoplay = false;
+      video.muted = true;
+      video.playsInline = true;
+      video.pause();
+      video.classList.add('video-scroll-play');
+      observer.observe(video);
+    }
+
+    function scan() {
+      document.querySelectorAll('video').forEach(attach);
     }
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initScrollVideos);
+      document.addEventListener('DOMContentLoaded', scan);
     } else {
-      initScrollVideos();
+      scan();
     }
 
-    // I page builder (GemPages/PageFly ecc.) a volte inseriscono i video dopo
-    // il caricamento: riprova dopo 1,5 secondi per agganciare anche quelli.
-    setTimeout(initScrollVideos, 1500);
+    // Shrine e i page builder inseriscono alcuni video dopo il caricamento:
+    // il MutationObserver li aggancia appena compaiono nel DOM.
+    new MutationObserver(scan).observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
   })();
 </script>
