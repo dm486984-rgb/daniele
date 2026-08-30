@@ -1,0 +1,155 @@
+<!-- =========================================================
+  LIVÈRA — Sezione "La scienza dietro una ricrescita più lenta"
+  Da incollare in: Shopify → Personalizza tema → Aggiungi sezione
+  → "Liquid personalizzato" (Custom Liquid)
+
+  IMMAGINI: sostituisci i 4 src="data:image/svg+xml..." con gli URL
+  delle tue immagini (caricale in Contenuti → File e copia il link).
+  Formato consigliato: quadrato, sfondo chiaro, come il riferimento.
+========================================================= -->
+
+<style>
+  .lv-ing-section {
+    background: #ffffff;
+    padding: 56px 20px 64px;
+    font-family: inherit;
+    color: #111111;
+  }
+  .lv-ing-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .lv-ing-eyebrow {
+    text-align: center;
+    font-style: italic;
+    font-size: 15px;
+    margin: 0 0 8px;
+    color: #111111;
+  }
+  .lv-ing-title {
+    text-align: center;
+    font-size: 40px;
+    line-height: 1.15;
+    font-weight: 500;
+    margin: 0 0 20px;
+    color: #111111;
+  }
+  .lv-ing-title .lv-ing-title-accent {
+    background: linear-gradient(90deg, #8a2be2, #c77dff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #8a2be2; /* fallback */
+  }
+  .lv-ing-intro {
+    max-width: 720px;
+    margin: 0 auto 48px;
+    text-align: center;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #111111;
+  }
+  .lv-ing-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+  .lv-ing-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .lv-ing-card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 20px;
+  }
+  .lv-ing-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0 0 10px;
+    color: #111111;
+  }
+  .lv-ing-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+    color: #111111;
+  }
+
+  /* ------- Mobile: carosello scorrevole con card successiva visibile ------- */
+  @media (max-width: 749px) {
+    .lv-ing-title { font-size: 30px; }
+    .lv-ing-intro { font-size: 16px; margin-bottom: 36px; }
+    .lv-ing-grid {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+      /* fa sbucare la card successiva dal bordo destro */
+      margin-right: -20px;
+      padding-right: 20px;
+      scrollbar-width: none;
+    }
+    .lv-ing-grid::-webkit-scrollbar { display: none; }
+    .lv-ing-card {
+      flex: 0 0 80%;
+      scroll-snap-align: start;
+    }
+  }
+</style>
+
+<section class="lv-ing-section">
+  <div class="lv-ing-inner">
+
+    <p class="lv-ing-eyebrow">Formula Versione 3</p>
+
+    <h2 class="lv-ing-title">
+      La scienza dietro<br>
+      <span class="lv-ing-title-accent">una ricrescita pi&ugrave; lenta</span>
+    </h2>
+
+    <p class="lv-ing-intro">
+      La nostra ultima formula &egrave; il risultato di anni di ricerca, test e
+      perfezionamento. Ogni revisione &egrave; guidata da un unico obiettivo:
+      creare il siero post&#8209;depilazione pi&ugrave; efficace possibile.
+      Questa &egrave; l&#39;ultima evoluzione della formula Liv&egrave;ra <strong>(V3)</strong>.
+    </p>
+
+    <div class="lv-ing-grid">
+
+      <!-- Card 1 — Cyperus Rotundus (traduzione del testo competitor) -->
+      <div class="lv-ing-card">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f4effa'/%3E%3Ctext x='200' y='195' text-anchor='middle' font-family='sans-serif' font-size='20' fill='%238a2be2'%3EImmagine%3C/text%3E%3Ctext x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23777'%3ECyperus Rotundus%3C/text%3E%3C/svg%3E" alt="Estratto di radice di Cyperus Rotundus" loading="lazy">
+        <h3>Estratto di Radice di Cyperus Rotundus</h3>
+        <p>Il fondamento della nostra formula. Selezionato per il suo potenziale, supportato dalla ricerca, di aiutare a ridurre visibilmente la ricrescita dei peli indesiderati con un uso costante dopo la depilazione.</p>
+      </div>
+
+      <!-- Card 2 — Menta Piperita -->
+      <div class="lv-ing-card">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f4effa'/%3E%3Ctext x='200' y='195' text-anchor='middle' font-family='sans-serif' font-size='20' fill='%238a2be2'%3EImmagine%3C/text%3E%3Ctext x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23777'%3EMenta Piperita%3C/text%3E%3C/svg%3E" alt="Estratto di menta piperita" loading="lazy">
+        <h3>Estratto di Menta Piperita</h3>
+        <p>Tradizionalmente apprezzato per il suo effetto rinfrescante e riequilibrante sulla pelle. Insieme al pantenolo, dona sollievo immediato dopo la depilazione, attenuando i rossori e lasciando la pelle fresca e calmata.</p>
+      </div>
+
+      <!-- Card 3 — Acido Ialuronico + Ceramidi -->
+      <div class="lv-ing-card">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f4effa'/%3E%3Ctext x='200' y='195' text-anchor='middle' font-family='sans-serif' font-size='20' fill='%238a2be2'%3EImmagine%3C/text%3E%3Ctext x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23777'%3EIaluronico %2B Ceramidi%3C/text%3E%3C/svg%3E" alt="Acido ialuronico e ceramidi" loading="lazy">
+        <h3>Acido Ialuronico e Ceramidi</h3>
+        <p>Scelti per completare il Cyperus Rotundus con un approccio pi&ugrave; completo alla cura della pelle: idratano in profondit&agrave; e rafforzano la barriera cutanea, riparando la pelle da anni di rasoio e mantenendola morbida ed elastica.</p>
+      </div>
+
+      <!-- Card 4 — Estratto di Limone -->
+      <div class="lv-ing-card">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f4effa'/%3E%3Ctext x='200' y='195' text-anchor='middle' font-family='sans-serif' font-size='20' fill='%238a2be2'%3EImmagine%3C/text%3E%3Ctext x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23777'%3EEstratto di Limone%3C/text%3E%3C/svg%3E" alt="Estratto di limone" loading="lazy">
+        <h3>Estratto di Limone</h3>
+        <p>Naturalmente ricco di attivi illuminanti che aiutano a schiarire delicatamente le zone scure &mdash; inguine, ascelle, interno coscia &mdash; rivelando una pelle pi&ugrave; uniforme e luminosa e completando la routine post&#8209;depilazione.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
