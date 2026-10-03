@@ -239,11 +239,45 @@
         "cta5"
       ],
       "settings": {}
+    },
+    "ugc_videos": {
+      "type": "video-carousel",
+      "blocks": {
+        "v1": {
+          "type": "video",
+          "settings": {}
+        },
+        "v2": {
+          "type": "video",
+          "settings": {}
+        },
+        "v3": {
+          "type": "video",
+          "settings": {}
+        },
+        "v4": {
+          "type": "video",
+          "settings": {}
+        },
+        "v5": {
+          "type": "video",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4",
+        "v5"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
     "story",
+    "ugc_videos",
     "benefits",
     "video",
     "reviews",
