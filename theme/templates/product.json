@@ -272,11 +272,58 @@
         "v5"
       ],
       "settings": {}
+    },
+    "story2": {
+      "type": "product-story-2",
+      "blocks": {
+        "row1": {
+          "type": "row",
+          "settings": {
+            "heading": "Il tuo cane merita il meglio!\nMerita di sentirsi al caldo, alla moda e coccolato quest'inverno!",
+            "subheading": "Affidati alla migliore giacca invernale per cani!"
+          }
+        },
+        "row2": {
+          "type": "row",
+          "settings": {
+            "text": "<p>La giacca 3 in 1 Zampa&Co aiuterà il tuo cane a stare comodo, al caldo e al sicuro quest'inverno! Comfort, sicurezza e stile sono i punti di forza della giacca 3 in 1 Zampa&Co.</p>",
+            "circle": true,
+            "caption_title": "Protezione da pioggia e vento",
+            "caption_text": "<p>Resistente all'acqua e al vento per proteggere il tuo cane in ogni stagione.</p>"
+          }
+        },
+        "row3": {
+          "type": "row",
+          "settings": {
+            "text": "<p>La giacca offre una protezione completa dalle intemperie. È antivento e idrorepellente, così il tuo cane resterà asciutto tutto il giorno, qualunque tempo faccia fuori, grazie alla sua superficie impermeabile. La giacca copre tutto il corpo del cane, pancia compresa.</p>",
+            "circle": true,
+            "caption_title": "Interno caldo in pile",
+            "caption_text": "<p>La morbida fodera in pile e il collo alto tengono il tuo cane al caldo anche nelle giornate più fredde.</p>"
+          }
+        },
+        "sizes4": {
+          "type": "sizes",
+          "settings": {}
+        },
+        "closing5": {
+          "type": "closing",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "row1",
+        "row2",
+        "row3",
+        "sizes4",
+        "closing5"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
     "story",
+    "story2",
     "ugc_videos",
     "benefits",
     "video",
