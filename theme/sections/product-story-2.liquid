@@ -43,8 +43,8 @@
   #ps2-{{ sid }} .p2__frame svg { display: block; width: 100%; height: auto; }
   #ps2-{{ sid }} .p2__frame video { pointer-events: none; }
   {%- unless section.settings.media_ratio == 'natural' -%}
-  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) { width: {{ section.settings.media_width }}%; }
-  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) .p2__frame { aspect-ratio: {% if section.settings.media_ratio == 'portrait' %}4 / 5{% else %}1 / 1{% endif %}; }
+  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) { width: {{ section.settings.media_width | default: 90 }}%; }
+  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) .p2__frame { aspect-ratio: {% if section.settings.media_ratio == 'square' %}1 / 1{% else %}4 / 5{% endif %}; }
   #ps2-{{ sid }} .p2__media:not(.p2__media--circle) .p2__frame img,
   #ps2-{{ sid }} .p2__media:not(.p2__media--circle) .p2__frame video { width: 100%; height: 100%; object-fit: cover; }
   {%- endunless -%}
@@ -242,8 +242,8 @@
       { "value": "square", "label": "Quadrato 1:1" },
       { "value": "portrait", "label": "Verticale 4:5" },
       { "value": "natural", "label": "Originale" }
-    ], "default": "square" },
-    { "type": "range", "id": "media_width", "label": "Larghezza foto/video su mobile", "min": 60, "max": 100, "step": 5, "unit": "%", "default": 85 },
+    ], "default": "portrait" },
+    { "type": "range", "id": "media_width", "label": "Larghezza foto/video su mobile", "min": 60, "max": 100, "step": 5, "unit": "%", "default": 90 },
     { "type": "range", "id": "radius", "label": "Arrotondamento", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 6 },
     { "type": "range", "id": "padding_mobile", "label": "Spazio sopra/sotto (mobile)", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40 },
     { "type": "range", "id": "padding_desktop", "label": "Spazio sopra/sotto (desktop)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96 }
