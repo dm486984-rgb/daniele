@@ -1,37 +1,37 @@
 {%- comment -%}
-  CAROSELLO VIDEO – da incollare in un blocco "Liquid personalizzato".
+  CAROSELLO VIDEO (3 video grandi) – da incollare in un blocco "Liquid personalizzato".
   Metti i link dei tuoi video qui sotto, UNO PER RIGA (Contenuti → File → copia link).
 {%- endcomment -%}
 {%- capture vcb_list -%}
 https://LINK-VIDEO-1.mp4
 https://LINK-VIDEO-2.mp4
 https://LINK-VIDEO-3.mp4
-https://LINK-VIDEO-4.mp4
-https://LINK-VIDEO-5.mp4
 {%- endcapture -%}
 {%- assign vcb_videos = vcb_list | newline_to_br | split: '<br />' -%}
 
 <style>
-  .vcb { --vcb-gap: 12px; --vcb-per-view: 2; --vcb-arrow: #1F3B57; --vcb-radius: 16px; padding: 24px 0; overflow: hidden; }
-  .vcb__slider { position: relative; max-width: 1400px; margin: 0 auto; padding: 0 38px; }
-  .vcb__track { display: flex; gap: var(--vcb-gap); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .vcb { --vcb-gap: 12px; --vcb-per-view: 1.3; --vcb-arrow: #1F3B57; --vcb-radius: 16px; padding: 24px 0; overflow: hidden; }
+  .vcb__slider { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  .vcb__track { display: flex; gap: var(--vcb-gap); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scroll-padding: 0 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .vcb__track::-webkit-scrollbar { display: none; }
   .vcb__item { flex: 0 0 calc((100% - (var(--vcb-per-view) - 1) * var(--vcb-gap)) / var(--vcb-per-view)); scroll-snap-align: start; position: relative; aspect-ratio: 9 / 16; border-radius: var(--vcb-radius); overflow: hidden; background: #e9e9e9; }
   .vcb__item video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
   .vcb__item video::-webkit-media-controls { display: none !important; }
-  .vcb__arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 34px; height: 34px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; display: grid; place-items: center; background: var(--vcb-arrow); color: #fff; box-shadow: 0 3px 10px rgba(0,0,0,.18); transition: opacity .2s, transform .2s; }
+  .vcb__arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 40px; height: 40px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; display: grid; place-items: center; background: var(--vcb-arrow); color: #fff; box-shadow: 0 3px 10px rgba(0,0,0,.25); transition: opacity .2s, transform .2s; }
   .vcb__arrow:hover { transform: translateY(-50%) scale(1.06); }
-  .vcb__arrow[disabled] { opacity: .35; cursor: default; transform: translateY(-50%); }
-  .vcb__arrow svg { width: 16px; height: 16px; }
-  .vcb__arrow--prev { left: 0; }
-  .vcb__arrow--next { right: 0; }
+  .vcb__arrow[disabled] { opacity: 0; pointer-events: none; }
+  .vcb__arrow[hidden] { display: none; }
+  .vcb__arrow svg { width: 18px; height: 18px; }
+  .vcb__arrow--prev { left: 24px; }
+  .vcb__arrow--next { right: 24px; }
   @media (min-width: 750px) {
     .vcb { --vcb-gap: 24px; --vcb-per-view: 3; padding: 40px 0; }
-    .vcb__slider { padding: 0 90px; }
+    .vcb__slider { padding: 0 40px; }
+    .vcb__track { scroll-padding: 0; }
     .vcb__arrow { width: 54px; height: 54px; }
     .vcb__arrow svg { width: 22px; height: 22px; }
-    .vcb__arrow--prev { left: 18px; }
-    .vcb__arrow--next { right: 18px; }
+    .vcb__arrow--prev { left: 8px; }
+    .vcb__arrow--next { right: 8px; }
   }
 </style>
 
@@ -99,19 +99,22 @@ https://LINK-VIDEO-5.mp4
     var settle;
     var update = function () {
       var max = track.scrollWidth - track.clientWidth - 2;
+      var none = max <= 0;
+      prev.hidden = none; next.hidden = none;
       prev.disabled = track.scrollLeft <= 2;
       next.disabled = track.scrollLeft >= max;
     };
     var go = function (dir) {
       index = Math.min(maxIndex(), Math.max(0, index + dir));
-      track.scrollTo({ left: index * step(), behavior: 'smooth' });
+      var target = index >= maxIndex() ? track.scrollWidth : index * step();
+      track.scrollTo({ left: target, behavior: 'smooth' });
     };
     prev.addEventListener('click', function () { go(-1); });
     next.addEventListener('click', function () { go(1); });
     track.addEventListener('scroll', function () {
       window.requestAnimationFrame(update);
       clearTimeout(settle);
-      settle = setTimeout(function () { var st = step(); if (st) index = Math.round(track.scrollLeft / st); }, 150);
+      settle = setTimeout(function () { var st = step(); if (st) index = Math.min(maxIndex(), Math.round(track.scrollLeft / st)); }, 150);
     }, { passive: true });
     window.addEventListener('resize', update);
     update();
