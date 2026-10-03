@@ -1,0 +1,119 @@
+{%- comment -%}
+  CAROSELLO VIDEO – da incollare in un blocco "Liquid personalizzato".
+  Metti i link dei tuoi video qui sotto, UNO PER RIGA (Contenuti → File → copia link).
+{%- endcomment -%}
+{%- capture vcb_list -%}
+https://LINK-VIDEO-1.mp4
+https://LINK-VIDEO-2.mp4
+https://LINK-VIDEO-3.mp4
+https://LINK-VIDEO-4.mp4
+https://LINK-VIDEO-5.mp4
+{%- endcapture -%}
+{%- assign vcb_videos = vcb_list | newline_to_br | split: '<br />' -%}
+
+<style>
+  .vcb { --vcb-gap: 12px; --vcb-per-view: 2; --vcb-arrow: #1F3B57; --vcb-radius: 16px; padding: 24px 0; overflow: hidden; }
+  .vcb__slider { position: relative; max-width: 1400px; margin: 0 auto; padding: 0 38px; }
+  .vcb__track { display: flex; gap: var(--vcb-gap); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .vcb__track::-webkit-scrollbar { display: none; }
+  .vcb__item { flex: 0 0 calc((100% - (var(--vcb-per-view) - 1) * var(--vcb-gap)) / var(--vcb-per-view)); scroll-snap-align: start; position: relative; aspect-ratio: 9 / 16; border-radius: var(--vcb-radius); overflow: hidden; background: #e9e9e9; }
+  .vcb__item video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+  .vcb__item video::-webkit-media-controls { display: none !important; }
+  .vcb__arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 34px; height: 34px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; display: grid; place-items: center; background: var(--vcb-arrow); color: #fff; box-shadow: 0 3px 10px rgba(0,0,0,.18); transition: opacity .2s, transform .2s; }
+  .vcb__arrow:hover { transform: translateY(-50%) scale(1.06); }
+  .vcb__arrow[disabled] { opacity: .35; cursor: default; transform: translateY(-50%); }
+  .vcb__arrow svg { width: 16px; height: 16px; }
+  .vcb__arrow--prev { left: 0; }
+  .vcb__arrow--next { right: 0; }
+  @media (min-width: 750px) {
+    .vcb { --vcb-gap: 24px; --vcb-per-view: 3; padding: 40px 0; }
+    .vcb__slider { padding: 0 90px; }
+    .vcb__arrow { width: 54px; height: 54px; }
+    .vcb__arrow svg { width: 22px; height: 22px; }
+    .vcb__arrow--prev { left: 18px; }
+    .vcb__arrow--next { right: 18px; }
+  }
+</style>
+
+<div class="vcb" data-vcb>
+  <div class="vcb__slider">
+    <button type="button" class="vcb__arrow vcb__arrow--prev" data-vcb-prev aria-label="Video precedente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="vcb__track" data-vcb-track>
+      {%- for url in vcb_videos -%}
+        {%- assign clean_url = url | strip -%}
+        {%- if clean_url != blank -%}
+          <div class="vcb__item"><video src="{{ clean_url }}" loop muted playsinline preload="metadata"></video></div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <button type="button" class="vcb__arrow vcb__arrow--next" data-vcb-next aria-label="Video successivo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-vcb]:not([data-vcb-ready])').forEach(function (root) {
+    root.setAttribute('data-vcb-ready', '');
+    var track = root.querySelector('[data-vcb-track]');
+    var prev = root.querySelector('[data-vcb-prev]');
+    var next = root.querySelector('[data-vcb-next]');
+    var videos = Array.prototype.slice.call(root.querySelectorAll('video'));
+
+    videos.forEach(function (v) {
+      v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true;
+      v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
+      v.removeAttribute('controls'); v.controls = false;
+    });
+
+    var play = function (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) play(e.target); else e.target.pause(); });
+      }, { threshold: 0.5 });
+      videos.forEach(function (v) { io.observe(v); });
+    } else {
+      videos.forEach(play);
+    }
+
+    track.addEventListener('click', function (e) {
+      var item = e.target.closest('.vcb__item');
+      var v = item && item.querySelector('video');
+      if (v && v.paused) play(v);
+    });
+
+    var step = function () {
+      var item = track.querySelector('.vcb__item');
+      if (!item) return 0;
+      var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
+      return item.getBoundingClientRect().width + gap;
+    };
+    var maxIndex = function () {
+      var st = step();
+      return st ? Math.max(0, Math.round((track.scrollWidth - track.clientWidth) / st)) : 0;
+    };
+    var index = 0;
+    var settle;
+    var update = function () {
+      var max = track.scrollWidth - track.clientWidth - 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max;
+    };
+    var go = function (dir) {
+      index = Math.min(maxIndex(), Math.max(0, index + dir));
+      track.scrollTo({ left: index * step(), behavior: 'smooth' });
+    };
+    prev.addEventListener('click', function () { go(-1); });
+    next.addEventListener('click', function () { go(1); });
+    track.addEventListener('scroll', function () {
+      window.requestAnimationFrame(update);
+      clearTimeout(settle);
+      settle = setTimeout(function () { var st = step(); if (st) index = Math.round(track.scrollLeft / st); }, 150);
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+</script>
