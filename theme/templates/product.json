@@ -195,10 +195,55 @@
         "show_view_all": false,
         "alt_bg": false
       }
+    },
+    "story": {
+      "type": "product-story",
+      "blocks": {
+        "row1": {
+          "type": "row",
+          "settings": {
+            "heading": "Il tuo migliore amico sarà elegante e alla moda con la sua nuova giacca!",
+            "text_top": "<p>Proprio come la moda per noi, la giacca DoggyKings è stata creata perché il tuo cane possa essere alla moda quanto te.</p>"
+          }
+        },
+        "row2": {
+          "type": "row",
+          "settings": {
+            "text_top": "<p>Il materiale di altissima qualità che utilizziamo garantisce al tuo cane il massimo comfort.</p>",
+            "highlight": "Pettorina integrata e facile da usare.",
+            "text_bottom": "<p>La pettorina è integrata nella giacca, con robusti anelli a D per agganciare il guinzaglio: non ti servono altre pettorine o collari.</p>"
+          }
+        },
+        "row3": {
+          "type": "row",
+          "settings": {
+            "text_top": "<p>Esci al freddo con il tuo amico a quattro zampe? Basta strati su strati o pettorine da infilare nei buchi del cappotto. Con la nostra giacca: <strong>ZIP, CLIP e VIA!</strong></p>",
+            "text_bottom": "<p>La morbida fodera in pile e il collo alto regolabile bloccano il vento e tengono al caldo il tuo cane, così potete esplorare all'aperto tutto l'anno, senza eccezioni!</p>",
+            "bullets": "Pettorina riflettente integrata\nInterno caldo e imbottito\nZip facile da indossare\nIdrorepellente"
+          }
+        },
+        "sizes4": {
+          "type": "sizes",
+          "settings": {}
+        },
+        "cta5": {
+          "type": "cta",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "row1",
+        "row2",
+        "row3",
+        "sizes4",
+        "cta5"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "story",
     "benefits",
     "video",
     "reviews",
