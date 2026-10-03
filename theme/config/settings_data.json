@@ -1,0 +1,15 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_primary": "#1F8A5F",
+      "color_primary_contrast": "#FFFFFF",
+      "color_accent": "#F2B33D",
+      "color_background": "#FFFFFF",
+      "color_background_alt": "#F2F7F4",
+      "color_text": "#14231C",
+      "color_sale": "#D23F3F",
+      "cart_type": "drawer"
+    }
+  }
+}

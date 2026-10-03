@@ -1,0 +1,215 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "overlay": 30,
+        "height": "large",
+        "alignment": "left",
+        "text_color": "#FFFFFF",
+        "eyebrow": "Nuovo brand",
+        "heading": "Il prodotto che stavi aspettando",
+        "text": "<p>Una frase che spiega il beneficio principale in modo chiaro e diretto.</p>",
+        "button_label": "Acquista ora",
+        "show_rating": true,
+        "rating_text": "4.9/5 da oltre 1.000 clienti"
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "title": "Spedizione veloce",
+            "text": "<p>Consegna in 24/48h in tutta Italia.</p>"
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "return",
+            "title": "Reso gratuito",
+            "text": "<p>Hai 30 giorni per cambiare idea.</p>"
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "Pagamenti sicuri",
+            "text": "<p>Carte, PayPal, Apple Pay e Klarna.</p>"
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "chat",
+            "title": "Assistenza dedicata",
+            "text": "<p>Ti rispondiamo entro 24h.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "alt_bg": true
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "I più amati",
+        "limit": 4,
+        "columns": 4,
+        "show_view_all": true,
+        "alt_bg": false
+      }
+    },
+    "story": {
+      "type": "image-with-text",
+      "blocks": {
+        "p1": {
+          "type": "point",
+          "settings": {
+            "text": "Materiali di alta qualità"
+          }
+        },
+        "p2": {
+          "type": "point",
+          "settings": {
+            "text": "Progettato in Italia"
+          }
+        },
+        "p3": {
+          "type": "point",
+          "settings": {
+            "text": "Testato da migliaia di clienti"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3"
+      ],
+      "settings": {
+        "image_right": false,
+        "eyebrow": "La nostra storia",
+        "heading": "Perché sceglierci",
+        "text": "<p>Racconta la storia del prodotto, come nasce e perché è diverso dagli altri.</p>",
+        "button_label": "Scopri di più",
+        "alt_bg": false
+      }
+    },
+    "video": {
+      "type": "video",
+      "settings": {
+        "heading": "Guarda come funziona",
+        "ratio": "landscape",
+        "autoplay": true,
+        "controls": false,
+        "alt_bg": false
+      }
+    },
+    "reviews": {
+      "type": "testimonials",
+      "blocks": {
+        "t1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Inserisci qui una recensione reale di un cliente.",
+            "author": "Cliente 1",
+            "verified": true
+          }
+        },
+        "t2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Inserisci qui una recensione reale di un cliente.",
+            "author": "Cliente 2",
+            "verified": true
+          }
+        },
+        "t3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Inserisci qui una recensione reale di un cliente.",
+            "author": "Cliente 3",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "heading": "Cosa dicono i clienti",
+        "alt_bg": true
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Quanto tempo ci mette la spedizione?",
+            "answer": "<p>Spediamo entro 24h; la consegna richiede 2-4 giorni lavorativi.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Posso restituire il prodotto?",
+            "answer": "<p>Sì, hai 30 giorni per il reso gratuito.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Quali metodi di pagamento accettate?",
+            "answer": "<p>Carte di credito, PayPal, Apple Pay, Google Pay e Klarna.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "settings": {
+        "heading": "Domande frequenti",
+        "open_first": false,
+        "alt_bg": false
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "-10% sul primo ordine",
+        "text": "<p>Iscriviti e ricevi subito il codice sconto.</p>"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "benefits",
+    "featured",
+    "story",
+    "video",
+    "reviews",
+    "faq",
+    "newsletter"
+  ]
+}

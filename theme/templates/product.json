@@ -1,0 +1,208 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "rating": {
+          "type": "rating",
+          "settings": {
+            "fallback_text": "Amato da oltre 1.000 clienti"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Breve frase sul beneficio principale.</p>"
+          }
+        },
+        "variants": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "buy": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity": true,
+            "show_dynamic_checkout": true
+          }
+        },
+        "trust": {
+          "type": "trust",
+          "settings": {
+            "line1": "Spedizione gratuita sopra i 49€",
+            "line2": "Reso gratuito entro 30 giorni",
+            "line3": "Pagamenti sicuri al 100%"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "shipping": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Spedizione e resi",
+            "content": "<p>Spediamo entro 24h. Reso gratuito entro 30 giorni.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "rating",
+        "title",
+        "price",
+        "text",
+        "variants",
+        "buy",
+        "trust",
+        "description",
+        "shipping"
+      ],
+      "settings": {
+        "sticky_atc": true
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "title": "Beneficio 1",
+            "text": "<p>Descrivi il primo beneficio.</p>"
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "heart",
+            "title": "Beneficio 2",
+            "text": "<p>Descrivi il secondo beneficio.</p>"
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "Beneficio 3",
+            "text": "<p>Descrivi il terzo beneficio.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ],
+      "settings": {
+        "heading": "Perché lo amerai",
+        "alt_bg": true
+      }
+    },
+    "video": {
+      "type": "video",
+      "settings": {
+        "heading": "Guardalo in azione",
+        "ratio": "landscape",
+        "autoplay": true,
+        "controls": false,
+        "alt_bg": false
+      }
+    },
+    "reviews": {
+      "type": "testimonials",
+      "blocks": {
+        "t1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Inserisci qui una recensione reale di un cliente.",
+            "author": "Cliente 1",
+            "verified": true
+          }
+        },
+        "t2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Inserisci qui una recensione reale di un cliente.",
+            "author": "Cliente 2",
+            "verified": true
+          }
+        },
+        "t3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Inserisci qui una recensione reale di un cliente.",
+            "author": "Cliente 3",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "heading": "Cosa dicono i clienti",
+        "alt_bg": true
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Quanto tempo ci mette la spedizione?",
+            "answer": "<p>Spediamo entro 24h; la consegna richiede 2-4 giorni lavorativi.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Posso restituire il prodotto?",
+            "answer": "<p>Sì, hai 30 giorni per il reso gratuito.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2"
+      ],
+      "settings": {
+        "heading": "Domande frequenti",
+        "open_first": false,
+        "alt_bg": false
+      }
+    },
+    "related": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Potrebbe piacerti anche",
+        "limit": 4,
+        "columns": 4,
+        "show_view_all": false,
+        "alt_bg": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "benefits",
+    "video",
+    "reviews",
+    "faq",
+    "related"
+  ]
+}

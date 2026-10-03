@@ -1,0 +1,39 @@
+{%- if section.blocks.size > 0 -%}
+  <div class="announcement-bar" style="--ab-bg: {{ section.settings.bg }}; --ab-fg: {{ section.settings.fg }};">
+    <div class="announcement-bar__track" data-rotate="{{ section.blocks.size }}">
+      {%- for block in section.blocks -%}
+        <p class="announcement-bar__item{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+          {%- else -%}
+            {{ block.settings.text }}
+          {%- endif -%}
+        </p>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Barra annunci",
+  "class": "section-announcement",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Sfondo", "default": "#14231C" },
+    { "type": "color", "id": "fg", "label": "Testo", "default": "#FFFFFF" }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Annuncio",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Testo", "default": "Spedizione gratuita sopra i 49€" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [{ "name": "Barra annunci", "blocks": [{ "type": "announcement" }] }],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

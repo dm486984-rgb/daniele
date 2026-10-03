@@ -1,0 +1,171 @@
+{
+  "general": {
+    "page": "Pagina {{ page }}",
+    "search": "Cerca",
+    "menu": "Menu",
+    "close": "Chiudi",
+    "previous": "Precedente",
+    "next": "Successiva",
+    "view_all": "Vedi tutto",
+    "continue_shopping": "Continua lo shopping",
+    "password_page": {
+      "login_form_heading": "Entra nel negozio con la password",
+      "login_password_button": "Entra",
+      "login_form_password_label": "Password",
+      "login_form_error": "Password errata",
+      "coming_soon": "Stiamo arrivando"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Vai al contenuto",
+    "cart_count": "Articoli nel carrello",
+    "decrease_quantity": "Diminuisci quantità",
+    "increase_quantity": "Aumenta quantità",
+    "unit_price_separator": "per"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Aggiungi al carrello",
+      "adding": "Aggiunta in corso…",
+      "sold_out": "Esaurito",
+      "unavailable": "Non disponibile",
+      "on_sale": "In offerta",
+      "regular_price": "Prezzo di listino",
+      "sale_price": "Prezzo scontato",
+      "from_price": "Da {{ price }}",
+      "quantity": "Quantità",
+      "save": "Risparmi {{ amount }}",
+      "shipping_policy": "Imposte incluse. <a href=\"{{ link }}\">Spedizione</a> calcolata al checkout.",
+      "taxes_included": "Imposte incluse."
+    }
+  },
+  "collections": {
+    "empty": "Nessun prodotto in questa collezione",
+    "sort_by": "Ordina per",
+    "products_count": {
+      "one": "{{ count }} prodotto",
+      "other": "{{ count }} prodotti"
+    }
+  },
+  "cart": {
+    "title": "Il tuo carrello",
+    "empty": "Il tuo carrello è vuoto",
+    "subtotal": "Subtotale",
+    "checkout": "Vai al checkout",
+    "remove": "Rimuovi",
+    "note": "Note per l'ordine",
+    "taxes_and_shipping": "Imposte e spedizione calcolate al checkout",
+    "free_shipping_remaining": "Ti mancano {{ amount }} per la spedizione gratuita",
+    "free_shipping_unlocked": "Hai sbloccato la spedizione gratuita!"
+  },
+  "search": {
+    "title": "Cerca",
+    "placeholder": "Cerca prodotti…",
+    "results_for": "Risultati per “{{ terms }}”",
+    "no_results": "Nessun risultato per “{{ terms }}”"
+  },
+  "blogs": {
+    "read_more": "Leggi di più",
+    "back": "Torna al blog",
+    "comments": "Commenti"
+  },
+  "templates": {
+    "404": {
+      "title": "Pagina non trovata",
+      "subtext": "La pagina che cerchi non esiste."
+    }
+  },
+  "newsletter": {
+    "email": "La tua email",
+    "subscribe": "Iscriviti",
+    "success": "Grazie per esserti iscritto!"
+  },
+  "customer": {
+    "login": {
+      "title": "Accedi",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Accedi",
+      "forgot": "Password dimenticata?",
+      "create": "Crea un account",
+      "recover_title": "Recupera password",
+      "recover_info": "Ti invieremo un'email per reimpostare la password.",
+      "recover_submit": "Invia",
+      "recover_success": "Ti abbiamo inviato un'email con il link per reimpostare la password.",
+      "cancel": "Annulla"
+    },
+    "register": {
+      "title": "Crea account",
+      "first_name": "Nome",
+      "last_name": "Cognome",
+      "submit": "Crea"
+    },
+    "account": {
+      "title": "Il mio account",
+      "logout": "Esci",
+      "orders": "Storico ordini",
+      "no_orders": "Non hai ancora effettuato ordini.",
+      "details": "Dettagli account",
+      "addresses": "Indirizzi",
+      "order": "Ordine",
+      "date": "Data",
+      "payment_status": "Pagamento",
+      "fulfillment_status": "Evasione",
+      "total": "Totale",
+      "back": "Torna all'account"
+    },
+    "order": {
+      "title": "Ordine {{ name }}",
+      "product": "Prodotto",
+      "quantity": "Quantità",
+      "price": "Prezzo",
+      "subtotal": "Subtotale",
+      "shipping": "Spedizione",
+      "tax": "Imposte",
+      "total": "Totale",
+      "billing_address": "Indirizzo di fatturazione",
+      "shipping_address": "Indirizzo di spedizione"
+    },
+    "addresses": {
+      "title": "I tuoi indirizzi",
+      "add": "Aggiungi indirizzo",
+      "edit": "Modifica",
+      "delete": "Elimina",
+      "default": "Predefinito",
+      "set_default": "Imposta come predefinito",
+      "first_name": "Nome",
+      "last_name": "Cognome",
+      "company": "Azienda",
+      "address1": "Indirizzo",
+      "address2": "Appartamento, interno, ecc.",
+      "city": "Città",
+      "country": "Paese",
+      "province": "Provincia",
+      "zip": "CAP",
+      "phone": "Telefono",
+      "save": "Salva",
+      "cancel": "Annulla",
+      "delete_confirm": "Vuoi eliminare questo indirizzo?"
+    },
+    "activate": {
+      "title": "Attiva account",
+      "info": "Crea una password per attivare il tuo account.",
+      "password_confirm": "Conferma password",
+      "submit": "Attiva",
+      "decline": "Rifiuta invito"
+    },
+    "reset": {
+      "title": "Reimposta password",
+      "submit": "Reimposta"
+    }
+  },
+  "gift_card": {
+    "title": "La tua gift card",
+    "code": "Codice",
+    "balance": "Saldo residuo",
+    "expired": "Scaduta",
+    "disabled": "Disattivata",
+    "print": "Stampa",
+    "shop": "Vai al negozio"
+  }
+}

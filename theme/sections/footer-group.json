@@ -1,0 +1,17 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "f1": { "type": "text", "settings": { "heading": "Chi siamo", "text": "<p>Racconta in due righe la missione del tuo brand.</p>" } },
+        "f2": { "type": "menu", "settings": { "heading": "Link utili", "menu": "footer" } },
+        "f3": { "type": "newsletter", "settings": { "heading": "Iscriviti alla newsletter" } }
+      },
+      "block_order": ["f1", "f2", "f3"],
+      "settings": { "bg": "#14231C", "fg": "#FFFFFF", "show_payment_icons": true }
+    }
+  },
+  "order": ["footer"]
+}

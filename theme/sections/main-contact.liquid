@@ -1,0 +1,33 @@
+<section class="section main-page">
+  <div class="page-width page-width--narrow">
+    <h1 class="section__title">{{ page.title }}</h1>
+    <div class="rte">{{ page.content }}</div>
+    {%- form 'contact', class: 'form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-success">Grazie! Ti risponderemo il prima possibile.</p>
+      {%- endif -%}
+      {%- if form.errors -%}<div class="form-error">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <div class="form__row">
+        <label for="ContactName">Nome</label>
+        <input id="ContactName" type="text" name="contact[name]" value="{{ form.name }}" autocomplete="name">
+      </div>
+      <div class="form__row">
+        <label for="ContactEmail">Email *</label>
+        <input id="ContactEmail" type="email" name="contact[email]" value="{{ form.email }}" required autocomplete="email">
+      </div>
+      <div class="form__row">
+        <label for="ContactPhone">Telefono</label>
+        <input id="ContactPhone" type="tel" name="contact[phone]" value="{{ form.phone }}" autocomplete="tel">
+      </div>
+      <div class="form__row">
+        <label for="ContactBody">Messaggio</label>
+        <textarea id="ContactBody" name="contact[body]" rows="6">{{ form.body }}</textarea>
+      </div>
+      <button type="submit" class="button">Invia</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Contatti", "settings": [] }
+{% endschema %}

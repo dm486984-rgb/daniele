@@ -1,0 +1,48 @@
+{%- paginate collection.products by section.settings.per_page -%}
+<section class="section main-collection">
+  <div class="page-width">
+    <div class="collection-header">
+      <h1>{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}<div class="rte">{{ collection.description }}</div>{%- endif -%}
+    </div>
+
+    <div class="collection-toolbar">
+      <p>{{ 'collections.products_count' | t: count: collection.products_count }}</p>
+      {%- if section.settings.show_sort -%}
+        <form class="collection-sort" data-collection-sort>
+          <label for="SortBy">{{ 'collections.sort_by' | t }}</label>
+          <select id="SortBy" name="sort_by" onchange="this.form.submit()">
+            {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+            {%- endfor -%}
+          </select>
+        </form>
+      {%- endif -%}
+    </div>
+
+    {%- if collection.products.size > 0 -%}
+      <div class="product-grid product-grid--{{ section.settings.columns }}">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="text-center">{{ 'collections.empty' | t }}</p>
+    {%- endif -%}
+
+    {% render 'pagination', paginate: paginate %}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collezione",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Prodotti per pagina", "min": 8, "max": 48, "step": 4, "default": 16 },
+    { "type": "range", "id": "columns", "label": "Colonne desktop", "min": 2, "max": 4, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "show_sort", "label": "Mostra ordinamento", "default": true }
+  ]
+}
+{% endschema %}

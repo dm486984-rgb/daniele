@@ -1,0 +1,60 @@
+<section class="section benefits{% if section.settings.alt_bg %} section--alt{% endif %}">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}<h2 class="section__title text-center">{{ section.settings.heading }}</h2>{%- endif -%}
+    <div class="benefits__grid benefits__grid--{{ section.blocks.size | at_most: 4 }}">
+      {%- for block in section.blocks -%}
+        <div class="benefit" {{ block.shopify_attributes }}>
+          <div class="benefit__icon">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', width: 56, height: 56 }}
+            {%- else -%}
+              {% render 'icon', icon: block.settings.icon %}
+            {%- endif -%}
+          </div>
+          <h3 class="benefit__title">{{ block.settings.title }}</h3>
+          {%- if block.settings.text != blank -%}<div class="benefit__text rte">{{ block.settings.text }}</div>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Benefici / Icone",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titolo" },
+    { "type": "checkbox", "id": "alt_bg", "label": "Sfondo alternativo", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Beneficio",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icona", "options": [
+          { "value": "truck", "label": "Spedizione" },
+          { "value": "return", "label": "Reso" },
+          { "value": "shield", "label": "Garanzia" },
+          { "value": "heart", "label": "Cuore" },
+          { "value": "leaf", "label": "Naturale" },
+          { "value": "chat", "label": "Assistenza" },
+          { "value": "check", "label": "Spunta" }
+        ], "default": "truck" },
+        { "type": "image_picker", "id": "image", "label": "Icona personalizzata (sostituisce l'icona)" },
+        { "type": "text", "id": "title", "label": "Titolo", "default": "Spedizione veloce" },
+        { "type": "richtext", "id": "text", "label": "Testo", "default": "<p>Consegna in 24/48h in tutta Italia.</p>" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [{
+    "name": "Benefici / Icone",
+    "blocks": [
+      { "type": "benefit", "settings": { "icon": "truck", "title": "Spedizione veloce" } },
+      { "type": "benefit", "settings": { "icon": "return", "title": "Reso gratuito 30 giorni" } },
+      { "type": "benefit", "settings": { "icon": "shield", "title": "Pagamenti sicuri" } },
+      { "type": "benefit", "settings": { "icon": "chat", "title": "Assistenza dedicata" } }
+    ]
+  }]
+}
+{% endschema %}
