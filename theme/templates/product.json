@@ -117,47 +117,6 @@
         "alt_bg": false
       }
     },
-    "reviews": {
-      "type": "testimonials",
-      "blocks": {
-        "t1": {
-          "type": "testimonial",
-          "settings": {
-            "rating": 5,
-            "quote": "Inserisci qui una recensione reale di un cliente.",
-            "author": "Cliente 1",
-            "verified": true
-          }
-        },
-        "t2": {
-          "type": "testimonial",
-          "settings": {
-            "rating": 5,
-            "quote": "Inserisci qui una recensione reale di un cliente.",
-            "author": "Cliente 2",
-            "verified": true
-          }
-        },
-        "t3": {
-          "type": "testimonial",
-          "settings": {
-            "rating": 5,
-            "quote": "Inserisci qui una recensione reale di un cliente.",
-            "author": "Cliente 3",
-            "verified": true
-          }
-        }
-      },
-      "block_order": [
-        "t1",
-        "t2",
-        "t3"
-      ],
-      "settings": {
-        "heading": "Cosa dicono i clienti",
-        "alt_bg": true
-      }
-    },
     "faq": {
       "type": "faq",
       "blocks": {
@@ -318,6 +277,34 @@
         "closing5"
       ],
       "settings": {}
+    },
+    "recensioni": {
+      "type": "recensioni",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {}
+        },
+        "r2": {
+          "type": "review",
+          "settings": {}
+        },
+        "r3": {
+          "type": "review",
+          "settings": {}
+        },
+        "r4": {
+          "type": "review",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -327,7 +314,7 @@
     "ugc_videos",
     "benefits",
     "video",
-    "reviews",
+    "recensioni",
     "faq",
     "related"
   ]
