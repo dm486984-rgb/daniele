@@ -1,6 +1,6 @@
 {%- comment -%}
   Carosello video UGC: onda animata + titolo + video in loop che partono da soli.
-  Mobile: 2 video visibili. Desktop: 3 video visibili.
+  Mobile: 2 o 3 video visibili (impostazione). Desktop: 3 video visibili.
   I video visibili partono in automatico (muti, in loop, senza controlli);
   quelli che escono dallo schermo si mettono in pausa. Frecce per scorrere di 1.
 {%- endcomment -%}
@@ -14,8 +14,8 @@
     --vc-wave: {{ section.settings.wave_color }};
     --vc-arrow: {{ section.settings.arrow_color }};
     --vc-radius: {{ section.settings.radius }}px;
-    --vc-gap: 12px;
-    --vc-per-view: 2;
+    --vc-gap: {% if section.settings.mobile_per_view == '3' %}8px{% else %}12px{% endif %};
+    --vc-per-view: {{ section.settings.mobile_per_view | default: '3' }};
     background: var(--vc-bg);
     color: var(--vc-text);
     padding: {{ section.settings.padding_mobile }}px 0;
@@ -215,6 +215,10 @@
   "settings": [
     { "type": "text", "id": "title", "label": "Titolo", "default": "Unisciti a oltre 1.500 proprietari di cani felici" },
     { "type": "text", "id": "subtitle", "label": "Sottotitolo (opzionale)" },
+    { "type": "select", "id": "mobile_per_view", "label": "Video visibili su mobile", "options": [
+      { "value": "2", "label": "2 video" },
+      { "value": "3", "label": "3 video" }
+    ], "default": "3" },
     { "type": "checkbox", "id": "show_wave", "label": "Mostra onda animata", "default": true },
     { "type": "range", "id": "wave_speed", "label": "Velocità onda (secondi, più basso = più veloce)", "min": 4, "max": 30, "step": 1, "unit": "s", "default": 12 },
     { "type": "header", "content": "Colori" },
