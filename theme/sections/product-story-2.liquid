@@ -154,7 +154,7 @@
             {%- if block.settings.title != blank -%}<p class="p2__sizes-title">{{ block.settings.title }}</p>{%- endif -%}
             {%- if block.settings.image != blank -%}
               <div class="p2__sizes-img">
-                {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: block.settings.title }}
+                {{ block.settings.image | image_url: width: 1640 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1640', sizes: '(min-width: 990px) 820px, calc(100vw - 40px)', alt: block.settings.title }}
               </div>
             {%- endif -%}
             {%- if block.settings.image == blank or block.settings.show_table -%}
