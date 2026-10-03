@@ -3,9 +3,9 @@
   Metti i link dei tuoi video qui sotto, UNO PER RIGA (Contenuti → File → copia link).
 {%- endcomment -%}
 {%- capture vcb_list -%}
-https://LINK-VIDEO-1.mp4
-https://LINK-VIDEO-2.mp4
-https://LINK-VIDEO-3.mp4
+https://cdn.shopify.com/videos/c/o/v/f1be52ffd0eb4ddd9453bf6895d4ca6e.mp4
+https://cdn.shopify.com/videos/c/o/v/2f9cc563189041b5ab4aef7536a88428.mp4
+https://cdn.shopify.com/videos/c/o/v/bfd2c8ef002841ba8f7da72cb0c48503.mp4
 {%- endcapture -%}
 {%- assign vcb_videos = vcb_list | newline_to_br | split: '<br />' -%}
 
@@ -25,12 +25,12 @@ https://LINK-VIDEO-3.mp4
   .vcb__arrow--prev { left: 0; }
   .vcb__arrow--next { right: 0; }
   @media (min-width: 750px) {
-    .vcb { --vcb-gap: 24px; --vcb-per-view: 3; --vcb-radius: 16px; padding: 40px 0; }
-    .vcb__slider { padding: 0 40px; }
+    .vcb { --vcb-gap: 12px; --vcb-per-view: 3; --vcb-radius: 14px; padding: 32px 0; }
+    .vcb__slider { padding: 0; }
     .vcb__arrow { width: 54px; height: 54px; }
     .vcb__arrow svg { width: 22px; height: 22px; }
-    .vcb__arrow--prev { left: 8px; }
-    .vcb__arrow--next { right: 8px; }
+    .vcb__arrow--prev { left: 6px; }
+    .vcb__arrow--next { right: 6px; }
   }
 </style>
 
@@ -43,7 +43,7 @@ https://LINK-VIDEO-3.mp4
       {%- for url in vcb_videos -%}
         {%- assign clean_url = url | strip -%}
         {%- if clean_url != blank -%}
-          <div class="vcb__item"><video src="{{ clean_url }}" loop muted playsinline preload="metadata"></video></div>
+          <div class="vcb__item"><video src="{{ clean_url }}" autoplay loop muted playsinline preload="auto"></video></div>
         {%- endif -%}
       {%- endfor -%}
     </div>
@@ -68,14 +68,34 @@ https://LINK-VIDEO-3.mp4
     });
 
     var play = function (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
+    var inView = false;
 
+    // Un video è "visibile" se è dentro la parte visibile del carosello
+    var visibleInTrack = function (v) {
+      var t = track.getBoundingClientRect();
+      var r = v.getBoundingClientRect();
+      var w = Math.min(r.right, t.right) - Math.max(r.left, t.left);
+      return w > r.width * 0.5;
+    };
+    var refresh = function () {
+      videos.forEach(function (v) {
+        if (inView && visibleInTrack(v)) { if (v.paused) play(v); }
+        else if (!v.paused) v.pause();
+      });
+    };
+    videos.forEach(function (v) {
+      v.addEventListener('loadeddata', function () { if (inView && visibleInTrack(v)) play(v); });
+    });
+
+    // Partono tutti insieme quando il blocco entra nello schermo, si fermano quando esce
     if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) play(e.target); else e.target.pause(); });
-      }, { threshold: 0.5 });
-      videos.forEach(function (v) { io.observe(v); });
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        refresh();
+      }, { threshold: 0.25 }).observe(root);
     } else {
-      videos.forEach(play);
+      inView = true;
+      refresh();
     }
 
     track.addEventListener('click', function (e) {
@@ -113,7 +133,7 @@ https://LINK-VIDEO-3.mp4
     track.addEventListener('scroll', function () {
       window.requestAnimationFrame(update);
       clearTimeout(settle);
-      settle = setTimeout(function () { var st = step(); if (st) index = Math.min(maxIndex(), Math.round(track.scrollLeft / st)); }, 150);
+      settle = setTimeout(function () { var st = step(); if (st) index = Math.min(maxIndex(), Math.round(track.scrollLeft / st)); refresh(); }, 150);
     }, { passive: true });
     window.addEventListener('resize', update);
     update();
