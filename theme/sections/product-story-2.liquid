@@ -29,8 +29,8 @@
   /* Testi */
   #ps2-{{ sid }} .p2__row { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; }
   #ps2-{{ sid }} .p2__content { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-  #ps2-{{ sid }} .p2__heading { margin: 0; font-size: 22px; line-height: 1.35; font-weight: 700; letter-spacing: .02em; color: var(--p2-red); }
-  #ps2-{{ sid }} .p2__sub { margin: 0; font-size: 17px; line-height: 1.4; font-weight: 700; letter-spacing: .02em; color: var(--p2-red); }
+  #ps2-{{ sid }} .p2__heading { margin: 0; font-size: 21px; line-height: 1.35; font-weight: 700; letter-spacing: .02em; color: var(--p2-red); }
+  #ps2-{{ sid }} .p2__sub { margin: 0; font-size: 16px; line-height: 1.4; font-weight: 700; letter-spacing: .02em; color: var(--p2-red); }
   #ps2-{{ sid }} .p2__text { font-size: 16px; line-height: 1.65; letter-spacing: .02em; }
   #ps2-{{ sid }} .p2__text p { margin: 0 0 12px; }
   #ps2-{{ sid }} .p2__text p:last-child { margin-bottom: 0; }
@@ -42,6 +42,12 @@
   #ps2-{{ sid }} .p2__frame video,
   #ps2-{{ sid }} .p2__frame svg { display: block; width: 100%; height: auto; }
   #ps2-{{ sid }} .p2__frame video { pointer-events: none; }
+  {%- unless section.settings.media_ratio == 'natural' -%}
+  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) { width: {{ section.settings.media_width }}%; }
+  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) .p2__frame { aspect-ratio: {% if section.settings.media_ratio == 'portrait' %}4 / 5{% else %}1 / 1{% endif %}; }
+  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) .p2__frame img,
+  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) .p2__frame video { width: 100%; height: 100%; object-fit: cover; }
+  {%- endunless -%}
 
   /* Media a cerchio dentro box grigio, con didascalia */
   #ps2-{{ sid }} .p2__media--circle { background: var(--p2-box); border-radius: var(--p2-radius); padding: 28px 22px 26px; }
@@ -80,7 +86,7 @@
     #ps2-{{ sid }} .p2__wrap { padding: 0 40px; }
     #ps2-{{ sid }} .p2__block + .p2__block { margin-top: 100px; }
     #ps2-{{ sid }} .p2__row { display: grid; grid-template-columns: 1fr 1fr; align-items: center; column-gap: 72px; text-align: left; }
-    #ps2-{{ sid }} .p2__row .p2__media { order: 1; }
+    #ps2-{{ sid }} .p2__row .p2__media { order: 1; width: 100%; }
     #ps2-{{ sid }} .p2__row .p2__content { order: 2; align-items: flex-start; }
     #ps2-{{ sid }} .p2__row--reverse .p2__media { order: 2; }
     #ps2-{{ sid }} .p2__row--reverse .p2__content { order: 1; }
@@ -232,6 +238,12 @@
     { "type": "color", "id": "caption_color", "label": "Titolo didascalia", "default": "#A88A6A" },
     { "type": "color", "id": "box_bg", "label": "Sfondo box immagini", "default": "#F7F7F7" },
     { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "media_ratio", "label": "Formato foto/video (non nel cerchio)", "options": [
+      { "value": "square", "label": "Quadrato 1:1" },
+      { "value": "portrait", "label": "Verticale 4:5" },
+      { "value": "natural", "label": "Originale" }
+    ], "default": "square" },
+    { "type": "range", "id": "media_width", "label": "Larghezza foto/video su mobile", "min": 60, "max": 100, "step": 5, "unit": "%", "default": 85 },
     { "type": "range", "id": "radius", "label": "Arrotondamento", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 6 },
     { "type": "range", "id": "padding_mobile", "label": "Spazio sopra/sotto (mobile)", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40 },
     { "type": "range", "id": "padding_desktop", "label": "Spazio sopra/sotto (desktop)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96 }
@@ -289,8 +301,8 @@
         {
           "type": "row",
           "settings": {
-            "heading": "Il tuo cane merita il meglio!\nMerita di sentirsi al caldo, alla moda e coccolato quest'inverno!",
-            "subheading": "Affidati alla migliore giacca invernale per cani!"
+            "heading": "Il tuo cane merita il meglio!",
+            "subheading": "Caldo, comodo e alla moda tutto l'inverno."
           }
         },
         {
