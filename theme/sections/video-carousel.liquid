@@ -1,0 +1,259 @@
+{%- comment -%}
+  Carosello video UGC: onda animata + titolo + video in loop che partono da soli.
+  Mobile: 2 o 3 video visibili (impostazione). Desktop: 3 video visibili.
+  I video visibili partono in automatico (muti, in loop, senza controlli);
+  quelli che escono dallo schermo si mettono in pausa. Frecce per scorrere di 1.
+{%- endcomment -%}
+
+{%- assign sid = section.id -%}
+
+{% style %}
+  #vc-{{ sid }} {
+    --vc-bg: {{ section.settings.bg }};
+    --vc-text: {{ section.settings.text_color }};
+    --vc-wave: {{ section.settings.wave_color }};
+    --vc-arrow: {{ section.settings.arrow_color }};
+    --vc-radius: {{ section.settings.radius }}px;
+    --vc-gap: {% if section.settings.mobile_per_view == '3' %}8px{% else %}12px{% endif %};
+    --vc-per-view: {{ section.settings.mobile_per_view | default: '3' }};
+    background: var(--vc-bg);
+    color: var(--vc-text);
+    padding: {{ section.settings.padding_mobile }}px 0;
+    overflow: hidden;
+  }
+
+  /* Onda */
+  #vc-{{ sid }} .vc__wave { display: block; width: 100%; height: 28px; overflow: hidden; margin-bottom: 18px; }
+  #vc-{{ sid }} .vc__wave svg { display: block; width: 400%; height: 100%; animation: vc-wave-{{ sid }} {{ section.settings.wave_speed }}s linear infinite; }
+  #vc-{{ sid }} .vc__wave path { fill: none; stroke: var(--vc-wave); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+  #vc-{{ sid }} .vc__wave path + path { opacity: .45; }
+  @keyframes vc-wave-{{ sid }} { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { #vc-{{ sid }} .vc__wave svg { animation: none; } }
+
+  #vc-{{ sid }} .vc__title { margin: 0 0 22px; padding: 0 16px; text-align: center; font-size: 26px; line-height: 1.2; font-weight: 500; color: var(--vc-text); }
+  #vc-{{ sid }} .vc__subtitle { margin: -10px 0 22px; padding: 0 16px; text-align: center; font-size: 15px; opacity: .75; }
+
+  /* Carosello */
+  #vc-{{ sid }} .vc__slider { position: relative; max-width: 1400px; margin: 0 auto; padding: 0 38px; }
+  #vc-{{ sid }} .vc__track {
+    display: flex; gap: var(--vc-gap);
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  #vc-{{ sid }} .vc__track::-webkit-scrollbar { display: none; }
+  #vc-{{ sid }} .vc__item {
+    flex: 0 0 calc((100% - (var(--vc-per-view) - 1) * var(--vc-gap)) / var(--vc-per-view));
+    scroll-snap-align: start;
+    position: relative; aspect-ratio: 9 / 16;
+    border-radius: var(--vc-radius); overflow: hidden; background: #e9e9e9;
+  }
+  #vc-{{ sid }} .vc__item video,
+  #vc-{{ sid }} .vc__item img,
+  #vc-{{ sid }} .vc__item svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  #vc-{{ sid }} .vc__item video { pointer-events: none; }
+  #vc-{{ sid }} .vc__item video::-webkit-media-controls { display: none !important; }
+
+  #vc-{{ sid }} .vc__arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+    width: 34px; height: 34px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
+    display: grid; place-items: center;
+    background: var(--vc-arrow); color: #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,.18);
+    transition: opacity .2s, transform .2s;
+  }
+  #vc-{{ sid }} .vc__arrow:hover { transform: translateY(-50%) scale(1.06); }
+  #vc-{{ sid }} .vc__arrow[disabled] { opacity: .35; cursor: default; transform: translateY(-50%); }
+  #vc-{{ sid }} .vc__arrow svg { width: 16px; height: 16px; }
+  #vc-{{ sid }} .vc__arrow--prev { left: 0; }
+  #vc-{{ sid }} .vc__arrow--next { right: 0; }
+
+  @media (min-width: 750px) {
+    #vc-{{ sid }} { --vc-gap: 24px; --vc-per-view: 3; padding: {{ section.settings.padding_desktop }}px 0; }
+    #vc-{{ sid }} .vc__wave { height: 36px; margin-bottom: 28px; }
+    #vc-{{ sid }} .vc__wave svg { width: 200%; }
+    #vc-{{ sid }} .vc__title { font-size: 40px; margin-bottom: 36px; }
+    #vc-{{ sid }} .vc__subtitle { margin: -20px 0 36px; font-size: 17px; }
+    #vc-{{ sid }} .vc__slider { padding: 0 90px; }
+    #vc-{{ sid }} .vc__arrow { width: 54px; height: 54px; }
+    #vc-{{ sid }} .vc__arrow svg { width: 22px; height: 22px; }
+    #vc-{{ sid }} .vc__arrow--prev { left: 18px; }
+    #vc-{{ sid }} .vc__arrow--next { right: 18px; }
+  }
+{% endstyle %}
+
+<section id="vc-{{ sid }}" class="vc" data-vc>
+  {%- if section.settings.show_wave -%}
+    <div class="vc__wave" aria-hidden="true">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <path d="M0 20 Q 18.75 6 37.5 20 T 75 20 T 112.5 20 T 150 20 T 187.5 20 T 225 20 T 262.5 20 T 300 20 T 337.5 20 T 375 20 T 412.5 20 T 450 20 T 487.5 20 T 525 20 T 562.5 20 T 600 20 T 637.5 20 T 675 20 T 712.5 20 T 750 20 T 787.5 20 T 825 20 T 862.5 20 T 900 20 T 937.5 20 T 975 20 T 1012.5 20 T 1050 20 T 1087.5 20 T 1125 20 T 1162.5 20 T 1200 20"/>
+        <path d="M0 22 Q 18.75 34 37.5 22 T 75 22 T 112.5 22 T 150 22 T 187.5 22 T 225 22 T 262.5 22 T 300 22 T 337.5 22 T 375 22 T 412.5 22 T 450 22 T 487.5 22 T 525 22 T 562.5 22 T 600 22 T 637.5 22 T 675 22 T 712.5 22 T 750 22 T 787.5 22 T 825 22 T 862.5 22 T 900 22 T 937.5 22 T 975 22 T 1012.5 22 T 1050 22 T 1087.5 22 T 1125 22 T 1162.5 22 T 1200 22"/>
+      </svg>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.title != blank -%}<h2 class="vc__title">{{ section.settings.title }}</h2>{%- endif -%}
+  {%- if section.settings.subtitle != blank -%}<p class="vc__subtitle">{{ section.settings.subtitle }}</p>{%- endif -%}
+
+  <div class="vc__slider">
+    <button type="button" class="vc__arrow vc__arrow--prev" data-vc-prev aria-label="Video precedente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+
+    <div class="vc__track" data-vc-track>
+      {%- for block in section.blocks -%}
+        <div class="vc__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.video != blank -%}
+            {{ block.settings.video | video_tag:
+              autoplay: false,
+              loop: true,
+              muted: true,
+              controls: false,
+              playsinline: true,
+              preload: 'metadata',
+              image_size: '600x',
+              class: 'vc__video'
+            }}
+          {%- elsif block.settings.video_url != blank -%}
+            <video class="vc__video" src="{{ block.settings.video_url }}" loop muted playsinline preload="metadata"></video>
+          {%- elsif block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy' }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <button type="button" class="vc__arrow vc__arrow--next" data-vc-next aria-label="Video successivo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('vc-{{ sid }}');
+    if (!root) return;
+    var track = root.querySelector('[data-vc-track]');
+    var prev = root.querySelector('[data-vc-prev]');
+    var next = root.querySelector('[data-vc-next]');
+    var videos = Array.prototype.slice.call(root.querySelectorAll('video'));
+
+    videos.forEach(function (v) {
+      v.muted = true;
+      v.defaultMuted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.setAttribute('muted', '');
+      v.setAttribute('playsinline', '');
+      v.setAttribute('webkit-playsinline', '');
+      v.removeAttribute('controls');
+      v.controls = false;
+    });
+
+    var play = function (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
+
+    // Parte da solo quando è visibile (in pagina e nel carosello), pausa quando esce
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) play(e.target); else e.target.pause();
+        });
+      }, { threshold: 0.5 });
+      videos.forEach(function (v) { io.observe(v); });
+    } else {
+      videos.forEach(play);
+    }
+
+    // Tocco sul video: se era fermo (es. risparmio energetico iPhone) lo fa partire
+    track.addEventListener('click', function (e) {
+      var item = e.target.closest('.vc__item');
+      var v = item && item.querySelector('video');
+      if (v && v.paused) play(v);
+    });
+
+    // Frecce: scorre di un video alla volta
+    var step = function () {
+      var item = track.querySelector('.vc__item');
+      if (!item) return 0;
+      var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
+      return item.getBoundingClientRect().width + gap;
+    };
+    var maxIndex = function () {
+      var st = step();
+      return st ? Math.max(0, Math.round((track.scrollWidth - track.clientWidth) / st)) : 0;
+    };
+    var index = 0;
+    var settle;
+    var update = function () {
+      var max = track.scrollWidth - track.clientWidth - 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max;
+    };
+    var go = function (dir) {
+      index = Math.min(maxIndex(), Math.max(0, index + dir));
+      track.scrollTo({ left: index * step(), behavior: 'smooth' });
+    };
+    prev.addEventListener('click', function () { go(-1); });
+    next.addEventListener('click', function () { go(1); });
+    track.addEventListener('scroll', function () {
+      window.requestAnimationFrame(update);
+      clearTimeout(settle);
+      // dopo uno swipe a mano, riallinea l'indice delle frecce
+      settle = setTimeout(function () { var st = step(); if (st) index = Math.round(track.scrollLeft / st); }, 150);
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Video clienti (carosello)",
+  "tag": "div",
+  "class": "section-video-carousel",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titolo", "default": "Unisciti a oltre 1.500 proprietari di cani felici" },
+    { "type": "text", "id": "subtitle", "label": "Sottotitolo (opzionale)" },
+    { "type": "select", "id": "mobile_per_view", "label": "Video visibili su mobile", "options": [
+      { "value": "2", "label": "2 video" },
+      { "value": "3", "label": "3 video" }
+    ], "default": "3" },
+    { "type": "checkbox", "id": "show_wave", "label": "Mostra onda animata", "default": true },
+    { "type": "range", "id": "wave_speed", "label": "Velocità onda (secondi, più basso = più veloce)", "min": 4, "max": 30, "step": 1, "unit": "s", "default": 12 },
+    { "type": "header", "content": "Colori" },
+    { "type": "color", "id": "bg", "label": "Sfondo", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Titolo", "default": "#1F3B57" },
+    { "type": "color", "id": "wave_color", "label": "Onda", "default": "#1F3B57" },
+    { "type": "color", "id": "arrow_color", "label": "Frecce", "default": "#1F3B57" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "radius", "label": "Arrotondamento video", "min": 0, "max": 30, "step": 2, "unit": "px", "default": 16 },
+    { "type": "range", "id": "padding_mobile", "label": "Spazio sopra/sotto (mobile)", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_desktop", "label": "Spazio sopra/sotto (desktop)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video (caricato su Shopify)" },
+        { "type": "url", "id": "video_url", "label": "Oppure link diretto .mp4", "info": "Usato solo se non carichi il video sopra" },
+        { "type": "image_picker", "id": "image", "label": "Immagine (se non hai il video)" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Video clienti (carosello)",
+      "blocks": [
+        { "type": "video" },
+        { "type": "video" },
+        { "type": "video" },
+        { "type": "video" },
+        { "type": "video" }
+      ]
+    }
+  ]
+}
+{% endschema %}

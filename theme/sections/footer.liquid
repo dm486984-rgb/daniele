@@ -1,0 +1,82 @@
+<footer class="footer" style="--footer-bg: {{ section.settings.bg }}; --footer-fg: {{ section.settings.fg }};">
+  <div class="page-width footer__grid">
+    {%- for block in section.blocks -%}
+      <div class="footer__block" {{ block.shopify_attributes }}>
+        {%- case block.type -%}
+          {%- when 'text' -%}
+            {%- if block.settings.heading != blank -%}<h3 class="footer__heading">{{ block.settings.heading }}</h3>{%- endif -%}
+            <div class="rte">{{ block.settings.text }}</div>
+          {%- when 'menu' -%}
+            {%- if block.settings.heading != blank -%}<h3 class="footer__heading">{{ block.settings.heading }}</h3>{%- endif -%}
+            <ul class="footer__links">
+              {%- for link in block.settings.menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- when 'newsletter' -%}
+            {%- if block.settings.heading != blank -%}<h3 class="footer__heading">{{ block.settings.heading }}</h3>{%- endif -%}
+            {% render 'newsletter-form', form_id: 'footer-newsletter' %}
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="page-width footer__bottom">
+    <ul class="footer__social">
+      {%- if settings.social_instagram != blank -%}<li><a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{% render 'icon', icon: 'instagram' %}</a></li>{%- endif -%}
+      {%- if settings.social_tiktok != blank -%}<li><a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">{% render 'icon', icon: 'tiktok' %}</a></li>{%- endif -%}
+      {%- if settings.social_facebook != blank -%}<li><a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">{% render 'icon', icon: 'facebook' %}</a></li>{%- endif -%}
+      {%- if settings.social_youtube != blank -%}<li><a href="{{ settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube">{% render 'icon', icon: 'youtube' %}</a></li>{%- endif -%}
+    </ul>
+
+    {%- if section.settings.show_payment_icons -%}
+      <ul class="footer__payments">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag: class: 'payment-icon' }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    <p class="footer__copyright">&copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}. {{ powered_by_link }}</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "section-footer",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Sfondo", "default": "#14231C" },
+    { "type": "color", "id": "fg", "label": "Testo", "default": "#FFFFFF" },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Mostra icone pagamento", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Testo",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Titolo", "default": "Chi siamo" },
+        { "type": "richtext", "id": "text", "label": "Testo", "default": "<p>Racconta in due righe la missione del tuo brand.</p>" }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Titolo", "default": "Link utili" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Titolo", "default": "Iscriviti alla newsletter" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

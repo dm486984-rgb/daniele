@@ -1,0 +1,337 @@
+{%- comment -%}
+  Sezione "Storia prodotto 2" (continuo della prima).
+  Mobile: testo → immagine/video, in ordine, centrato.
+  Desktop: righe affiancate a zig-zag; guida taglie e chiusura centrate.
+  Blocchi: Testo + media, Guida taglie (tabella in HTML), Testo finale.
+{%- endcomment -%}
+
+{%- liquid
+  assign sid = section.id
+  assign row_index = 0
+-%}
+
+{% style %}
+  #ps2-{{ sid }} {
+    --p2-bg: {{ section.settings.bg }};
+    --p2-text: {{ section.settings.text_color }};
+    --p2-red: {{ section.settings.red_color }};
+    --p2-gold: {{ section.settings.gold_color }};
+    --p2-caption: {{ section.settings.caption_color }};
+    --p2-box: {{ section.settings.box_bg }};
+    --p2-radius: {{ section.settings.radius }}px;
+    background: var(--p2-bg);
+    color: var(--p2-text);
+    padding: {{ section.settings.padding_mobile }}px 0;
+  }
+  #ps2-{{ sid }} .p2__wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  #ps2-{{ sid }} .p2__block + .p2__block { margin-top: 48px; }
+
+  /* Testi */
+  #ps2-{{ sid }} .p2__row { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; }
+  #ps2-{{ sid }} .p2__content { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  #ps2-{{ sid }} .p2__heading { margin: 0; font-size: 21px; line-height: 1.35; font-weight: 700; letter-spacing: .02em; color: var(--p2-red); }
+  #ps2-{{ sid }} .p2__sub { margin: 0; font-size: 16px; line-height: 1.4; font-weight: 700; letter-spacing: .02em; color: var(--p2-red); }
+  #ps2-{{ sid }} .p2__text { font-size: 16px; line-height: 1.65; letter-spacing: .02em; }
+  #ps2-{{ sid }} .p2__text p { margin: 0 0 12px; }
+  #ps2-{{ sid }} .p2__text p:last-child { margin-bottom: 0; }
+
+  /* Media */
+  #ps2-{{ sid }} .p2__media { width: 100%; }
+  #ps2-{{ sid }} .p2__frame { position: relative; width: 100%; overflow: hidden; border-radius: var(--p2-radius); background: var(--p2-box); }
+  #ps2-{{ sid }} .p2__frame img,
+  #ps2-{{ sid }} .p2__frame video,
+  #ps2-{{ sid }} .p2__frame svg { display: block; width: 100%; height: auto; }
+  #ps2-{{ sid }} .p2__frame video { pointer-events: none; }
+  {%- unless section.settings.media_ratio == 'natural' -%}
+  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) { width: {{ section.settings.media_width | default: 90 }}%; }
+  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) .p2__frame { aspect-ratio: {% if section.settings.media_ratio == 'square' %}1 / 1{% else %}4 / 5{% endif %}; }
+  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) .p2__frame img,
+  #ps2-{{ sid }} .p2__media:not(.p2__media--circle) .p2__frame video { width: 100%; height: 100%; object-fit: cover; }
+  {%- endunless -%}
+
+  /* Media a cerchio dentro box grigio, con didascalia */
+  #ps2-{{ sid }} .p2__media--circle { background: var(--p2-box); border-radius: var(--p2-radius); padding: 28px 22px 26px; }
+  #ps2-{{ sid }} .p2__media--circle .p2__frame { width: 88%; max-width: 420px; margin: 0 auto; aspect-ratio: 1; border-radius: 50%; border: 4px solid var(--p2-gold); background: #fff; }
+  #ps2-{{ sid }} .p2__media--circle .p2__frame img,
+  #ps2-{{ sid }} .p2__media--circle .p2__frame video,
+  #ps2-{{ sid }} .p2__media--circle .p2__frame svg { width: 100%; height: 100%; object-fit: cover; }
+  #ps2-{{ sid }} .p2__caption-title { margin: 22px 0 6px; font-size: 20px; font-weight: 700; color: var(--p2-caption); }
+  #ps2-{{ sid }} .p2__caption-text { font-size: 15px; line-height: 1.6; opacity: .85; }
+  #ps2-{{ sid }} .p2__caption-text p { margin: 0; }
+
+  /* Guida taglie */
+  #ps2-{{ sid }} .p2__sizes { text-align: center; }
+  #ps2-{{ sid }} .p2__sizes-title { margin: 0 0 18px; font-size: 16px; line-height: 1.5; font-weight: 500; color: var(--p2-red); letter-spacing: .02em; }
+  #ps2-{{ sid }} .p2__sizes-img { width: 100%; max-width: {{ section.settings.size_img_width | default: 820 }}px; margin: 0 auto; }
+  #ps2-{{ sid }} .p2__sizes-img + .p2__table-wrap { margin-top: 20px; }
+  #ps2-{{ sid }} .p2__sizes-img img { display: block; width: 100%; height: auto; }
+  #ps2-{{ sid }} .p2__table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  #ps2-{{ sid }} .p2__table { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.3; }
+  #ps2-{{ sid }} .p2__table th { padding: 8px 6px; font-size: 13px; font-weight: 800; text-transform: uppercase; color: var(--p2-gold); letter-spacing: .03em; }
+  #ps2-{{ sid }} .p2__table td { padding: 9px 6px; border: 1px solid #222; }
+  #ps2-{{ sid }} .p2__table td:first-child { background: #111; color: #fff; font-size: 17px; font-weight: 800; border-color: #111; white-space: nowrap; }
+  #ps2-{{ sid }} .p2__table tr:nth-child(even) td:not(:first-child) { background: rgba(0,0,0,.025); }
+
+  /* Testo finale */
+  #ps2-{{ sid }} .p2__closing { text-align: center; }
+
+  /* Animazione */
+  @media (prefers-reduced-motion: no-preference) {
+    #ps2-{{ sid }} [data-p2-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    #ps2-{{ sid }} [data-p2-reveal].is-visible { opacity: 1; transform: none; }
+  }
+
+  /* ---------- Desktop ---------- */
+  @media (min-width: 990px) {
+    #ps2-{{ sid }} { padding: {{ section.settings.padding_desktop }}px 0; }
+    #ps2-{{ sid }} .p2__wrap { padding: 0 40px; }
+    #ps2-{{ sid }} .p2__block + .p2__block { margin-top: 100px; }
+    #ps2-{{ sid }} .p2__row { display: grid; grid-template-columns: 1fr 1fr; align-items: center; column-gap: 72px; text-align: left; }
+    #ps2-{{ sid }} .p2__row .p2__media { order: 1; width: 100%; }
+    #ps2-{{ sid }} .p2__row .p2__content { order: 2; align-items: flex-start; }
+    #ps2-{{ sid }} .p2__row--reverse .p2__media { order: 2; }
+    #ps2-{{ sid }} .p2__row--reverse .p2__content { order: 1; }
+    #ps2-{{ sid }} .p2__row .p2__caption-title,
+    #ps2-{{ sid }} .p2__row .p2__caption-text { text-align: center; }
+    #ps2-{{ sid }} .p2__heading { font-size: 34px; line-height: 1.25; }
+    #ps2-{{ sid }} .p2__sub { font-size: 20px; }
+    #ps2-{{ sid }} .p2__text { font-size: 17px; }
+    #ps2-{{ sid }} .p2__sizes,
+    #ps2-{{ sid }} .p2__closing { max-width: 820px; margin-left: auto; margin-right: auto; }
+    #ps2-{{ sid }} .p2__sizes-title { font-size: 19px; }
+    #ps2-{{ sid }} .p2__table { font-size: 15px; }
+    #ps2-{{ sid }} .p2__table th { font-size: 15px; padding: 10px; }
+    #ps2-{{ sid }} .p2__table td { padding: 12px 10px; }
+    #ps2-{{ sid }} .p2__table td:first-child { font-size: 20px; }
+    #ps2-{{ sid }} .p2__closing .p2__text { font-size: 19px; }
+  }
+{% endstyle %}
+
+<section id="ps2-{{ sid }}" class="p2">
+  <div class="p2__wrap">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+
+        {%- when 'row' -%}
+          {%- liquid
+            assign row_index = row_index | plus: 1
+            assign reverse = false
+            case block.settings.image_position
+              when 'right'
+                assign reverse = true
+              when 'auto'
+                assign mod = row_index | modulo: 2
+                if mod == 0
+                  assign reverse = true
+                endif
+            endcase
+          -%}
+          <div class="p2__block p2__row{% if reverse %} p2__row--reverse{% endif %}" data-p2-reveal {{ block.shopify_attributes }}>
+            <div class="p2__content">
+              {%- if block.settings.heading != blank -%}<h2 class="p2__heading">{{ block.settings.heading | newline_to_br }}</h2>{%- endif -%}
+              {%- if block.settings.subheading != blank -%}<p class="p2__sub">{{ block.settings.subheading }}</p>{%- endif -%}
+              {%- if block.settings.text != blank -%}<div class="p2__text">{{ block.settings.text }}</div>{%- endif -%}
+            </div>
+
+            <div class="p2__media{% if block.settings.circle %} p2__media--circle{% endif %}">
+              <div class="p2__frame">
+                {%- if block.settings.video != blank -%}
+                  {{ block.settings.video | video_tag: autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', image_size: '800x' }}
+                {%- elsif block.settings.image != blank -%}
+                  {%- assign img_alt = block.settings.image.alt | default: block.settings.caption_title | default: block.settings.heading | strip_html | escape -%}
+                  {{ block.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1400', sizes: '(min-width: 990px) 560px, calc(100vw - 40px)', alt: img_alt }}
+                {%- else -%}
+                  {{ 'product-apparel-1' | placeholder_svg_tag }}
+                {%- endif -%}
+              </div>
+              {%- if block.settings.caption_title != blank -%}<h3 class="p2__caption-title">{{ block.settings.caption_title }}</h3>{%- endif -%}
+              {%- if block.settings.caption_text != blank -%}<div class="p2__caption-text">{{ block.settings.caption_text }}</div>{%- endif -%}
+            </div>
+          </div>
+
+        {%- when 'sizes' -%}
+          <div class="p2__block p2__sizes" data-p2-reveal {{ block.shopify_attributes }}>
+            {%- if block.settings.title != blank -%}<p class="p2__sizes-title">{{ block.settings.title }}</p>{%- endif -%}
+            {%- if block.settings.image != blank -%}
+              <div class="p2__sizes-img">
+                {{ block.settings.image | image_url: width: 1640 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1640', sizes: '(min-width: 990px) 820px, calc(100vw - 40px)', alt: block.settings.title }}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.image == blank or block.settings.show_table -%}
+            {%- assign rows = block.settings.rows | newline_to_br | split: '<br />' -%}
+            <div class="p2__table-wrap">
+              <table class="p2__table">
+                <thead>
+                  <tr>
+                    <th>{{ block.settings.col_1 }}</th>
+                    <th>{{ block.settings.col_2 }}</th>
+                    <th>{{ block.settings.col_3 }}</th>
+                    <th>{{ block.settings.col_4 }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {%- for row in rows -%}
+                    {%- assign clean_row = row | strip -%}
+                    {%- if clean_row != blank -%}
+                      {%- assign cells = clean_row | split: '|' -%}
+                      <tr>
+                        {%- for cell in cells limit: 4 -%}<td>{{ cell | strip }}</td>{%- endfor -%}
+                      </tr>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+            {%- endif -%}
+          </div>
+
+        {%- when 'closing' -%}
+          <div class="p2__block p2__closing" data-p2-reveal {{ block.shopify_attributes }}>
+            <div class="p2__text">{{ block.settings.text }}</div>
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('ps2-{{ sid }}');
+    if (!root) return;
+    var reveal = root.querySelectorAll('[data-p2-reveal]');
+    var videos = root.querySelectorAll('video');
+    videos.forEach(function (v) {
+      v.muted = true; v.loop = true; v.playsInline = true;
+      v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+      v.removeAttribute('controls');
+    });
+    if (!('IntersectionObserver' in window)) {
+      reveal.forEach(function (el) { el.classList.add('is-visible'); });
+      videos.forEach(function (v) { v.play(); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    reveal.forEach(function (el) { io.observe(el); });
+    // Video: parte quando è visibile, pausa quando esce
+    var vo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { var p = e.target.play(); if (p && p.catch) p.catch(function () {}); }
+        else e.target.pause();
+      });
+    }, { threshold: 0.4 });
+    videos.forEach(function (v) { vo.observe(v); });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Storia prodotto 2",
+  "tag": "div",
+  "class": "section-product-story-2",
+  "settings": [
+    { "type": "header", "content": "Colori" },
+    { "type": "color", "id": "bg", "label": "Sfondo", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Testo", "default": "#1A1A1A" },
+    { "type": "color", "id": "red_color", "label": "Titoli rossi", "default": "#F2380F" },
+    { "type": "color", "id": "gold_color", "label": "Bordo cerchi e intestazione tabella", "default": "#D4A256" },
+    { "type": "color", "id": "caption_color", "label": "Titolo didascalia", "default": "#A88A6A" },
+    { "type": "color", "id": "box_bg", "label": "Sfondo box immagini", "default": "#F7F7F7" },
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "media_ratio", "label": "Formato foto/video (non nel cerchio)", "options": [
+      { "value": "square", "label": "Quadrato 1:1" },
+      { "value": "portrait", "label": "Verticale 4:5" },
+      { "value": "natural", "label": "Originale" }
+    ], "default": "portrait" },
+    { "type": "range", "id": "media_width", "label": "Larghezza foto/video su mobile", "min": 60, "max": 100, "step": 5, "unit": "%", "default": 90 },
+    { "type": "range", "id": "size_img_width", "label": "Larghezza max immagine guida taglie (desktop)", "min": 400, "max": 1200, "step": 20, "unit": "px", "default": 820 },
+    { "type": "range", "id": "radius", "label": "Arrotondamento", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 6 },
+    { "type": "range", "id": "padding_mobile", "label": "Spazio sopra/sotto (mobile)", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_desktop", "label": "Spazio sopra/sotto (desktop)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Testo + immagine/video",
+      "settings": [
+        { "type": "textarea", "id": "heading", "label": "Titolo rosso (grande)" },
+        { "type": "text", "id": "subheading", "label": "Sottotitolo rosso" },
+        { "type": "richtext", "id": "text", "label": "Testo" },
+        { "type": "image_picker", "id": "image", "label": "Immagine o GIF" },
+        { "type": "video", "id": "video", "label": "Oppure video (parte da solo, in loop)" },
+        { "type": "checkbox", "id": "circle", "label": "Immagine nel cerchio dorato (box grigio)", "default": false },
+        { "type": "text", "id": "caption_title", "label": "Didascalia: titolo (sotto l'immagine)" },
+        { "type": "richtext", "id": "caption_text", "label": "Didascalia: testo" },
+        { "type": "select", "id": "image_position", "label": "Posizione immagine (desktop)", "options": [
+          { "value": "auto", "label": "Alternata (zig-zag)" },
+          { "value": "left", "label": "Sinistra" },
+          { "value": "right", "label": "Destra" }
+        ], "default": "auto" }
+      ]
+    },
+    {
+      "type": "sizes",
+      "name": "Guida taglie",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titolo", "default": "GUIDA TAGLIE (misura il torace del tuo cane per evitare errori di taglia)" },
+        { "type": "image_picker", "id": "image", "label": "Immagine guida taglie", "info": "Se carichi l'immagine viene mostrata grande al posto della tabella" },
+        { "type": "checkbox", "id": "show_table", "label": "Mostra anche la tabella sotto l'immagine", "default": false },
+        { "type": "text", "id": "col_1", "label": "Colonna 1", "default": "Taglia" },
+        { "type": "text", "id": "col_2", "label": "Colonna 2", "default": "Peso" },
+        { "type": "text", "id": "col_3", "label": "Colonna 3", "default": "Torace" },
+        { "type": "text", "id": "col_4", "label": "Colonna 4", "default": "Razze (esempio)" },
+        {
+          "type": "textarea", "id": "rows", "label": "Righe tabella",
+          "info": "Una riga per taglia, colonne separate da |",
+          "default": "S | 1,5–2 kg | 20–30 cm | Chihuahua, cani piccoli e cuccioli\nM | 2–3,5 kg | 30–36 cm | Pomerania, Mini Terrier\nL | 3,5–5 kg | 36–42 cm | Bassotto nano, Terrier piccoli\nXL | 5–7 kg | 42–46 cm | Yorkshire Terrier, Maltese\n2XL | 7–9 kg | 46–50 cm | Jack Russell, Shih Tzu\n3XL | 9–15 kg | 50–58 cm | Border Terrier, Beagle, Corgi\n4XL | 15–20 kg | 58–64 cm | Boxer, Basset Hound\n5XL | 20+ kg | 64+ cm | Labrador, Golden Retriever, cani grandi"
+        }
+      ]
+    },
+    {
+      "type": "closing",
+      "name": "Testo finale",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Testo", "default": "<p>Con la sua nuova giacca, il tuo migliore amico potrà stare fuori con te per ore senza sentire freddo, al sicuro e comodo. E potrà anche giocare con gli altri cani!</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Storia prodotto 2",
+      "blocks": [
+        {
+          "type": "row",
+          "settings": {
+            "heading": "Il tuo cane merita il meglio!",
+            "subheading": "Caldo, comodo e alla moda tutto l'inverno."
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "text": "<p>La giacca 3 in 1 Zampa&Co aiuterà il tuo cane a stare comodo, al caldo e al sicuro quest'inverno! Comfort, sicurezza e stile sono i punti di forza della giacca 3 in 1 Zampa&Co.</p>",
+            "circle": true,
+            "caption_title": "Protezione da pioggia e vento",
+            "caption_text": "<p>Resistente all'acqua e al vento per proteggere il tuo cane in ogni stagione.</p>"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "text": "<p>La giacca offre una protezione completa dalle intemperie. È antivento e idrorepellente, così il tuo cane resterà asciutto tutto il giorno, qualunque tempo faccia fuori, grazie alla sua superficie impermeabile. La giacca copre tutto il corpo del cane, pancia compresa.</p>",
+            "circle": true,
+            "caption_title": "Interno caldo in pile",
+            "caption_text": "<p>La morbida fodera in pile e il collo alto tengono il tuo cane al caldo anche nelle giornate più fredde.</p>"
+          }
+        },
+        { "type": "sizes" },
+        { "type": "closing" }
+      ]
+    }
+  ]
+}
+{% endschema %}

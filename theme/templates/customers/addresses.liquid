@@ -1,0 +1,33 @@
+<div class="section"><div class="page-width page-width--narrow">
+  <a href="{{ routes.account_url }}" class="link">&larr; {{ 'customer.account.back' | t }}</a>
+  <h1>{{ 'customer.addresses.title' | t }}</h1>
+
+  {%- paginate customer.addresses by 10 -%}
+    <details class="accordion__item">
+      <summary class="button">{{ 'customer.addresses.add' | t }}</summary>
+      {%- form 'customer_address', customer.new_address, class: 'form' -%}
+        {% render 'address-fields', form: form, prefix: 'new' %}
+        <button type="submit" class="button">{{ 'customer.addresses.save' | t }}</button>
+      {%- endform -%}
+    </details>
+
+    {%- for address in customer.addresses -%}
+      <div class="address-card">
+        {%- if address == customer.default_address -%}<p class="badge">{{ 'customer.addresses.default' | t }}</p>{%- endif -%}
+        {{ address | format_address }}
+        <details>
+          <summary class="link">{{ 'customer.addresses.edit' | t }}</summary>
+          {%- form 'customer_address', address, class: 'form' -%}
+            {% render 'address-fields', form: form, prefix: address.id %}
+            <button type="submit" class="button">{{ 'customer.addresses.save' | t }}</button>
+          {%- endform -%}
+        </details>
+        <form method="post" action="{{ address.url }}" onsubmit="return confirm({{ 'customer.addresses.delete_confirm' | t | json | escape }});">
+          <input type="hidden" name="_method" value="delete">
+          <button type="submit" class="link">{{ 'customer.addresses.delete' | t }}</button>
+        </form>
+      </div>
+    {%- endfor -%}
+    {% render 'pagination', paginate: paginate %}
+  {%- endpaginate -%}
+</div></div>

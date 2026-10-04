@@ -1,0 +1,26 @@
+{%- comment -%} Variabili CSS generate dalle impostazioni del tema {%- endcomment -%}
+<style>
+  :root {
+    --color-primary: {{ settings.color_primary }};
+    --color-primary-rgb: {{ settings.color_primary.red }}, {{ settings.color_primary.green }}, {{ settings.color_primary.blue }};
+    --color-primary-contrast: {{ settings.color_primary_contrast }};
+    --color-accent: {{ settings.color_accent }};
+    --color-bg: {{ settings.color_background }};
+    --color-bg-alt: {{ settings.color_background_alt }};
+    --color-text: {{ settings.color_text }};
+    --color-text-rgb: {{ settings.color_text.red }}, {{ settings.color_text.green }}, {{ settings.color_text.blue }};
+    --color-sale: {{ settings.color_sale }};
+
+    --font-heading-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-heading-style: {{ settings.type_heading_font.style }};
+    --font-heading-weight: {{ settings.type_heading_font.weight }};
+    --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --font-body-style: {{ settings.type_body_font.style }};
+    --font-body-weight: {{ settings.type_body_font.weight }};
+    --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 900 }};
+
+    --radius: {{ settings.border_radius }}px;
+    --button-radius: {{ settings.button_radius }}px;
+    --page-width: {{ settings.page_width }}px;
+  }
+</style>

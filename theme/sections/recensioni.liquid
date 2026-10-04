@@ -1,0 +1,436 @@
+{%- comment -%}
+  Sezione Recensioni clienti.
+  - Media e distribuzione stelle calcolate automaticamente dalle recensioni inserite.
+  - Griglia a colonne: 4 su desktop, 2 su mobile.
+  - Click su una recensione: si apre a schermo intero (desktop: foto a sinistra, testo a destra).
+  - Prime N recensioni visibili, poi "Mostra altre recensioni" e "Chiudi recensioni".
+{%- endcomment -%}
+
+{%- liquid
+  assign sid = section.id
+  assign total = 0
+  assign sum = 0
+  assign c5 = 0
+  assign c4 = 0
+  assign c3 = 0
+  assign c2 = 0
+  assign c1 = 0
+  for block in section.blocks
+    assign r = block.settings.rating | plus: 0
+    assign total = total | plus: 1
+    assign sum = sum | plus: r
+    case r
+      when 5
+        assign c5 = c5 | plus: 1
+      when 4
+        assign c4 = c4 | plus: 1
+      when 3
+        assign c3 = c3 | plus: 1
+      when 2
+        assign c2 = c2 | plus: 1
+      else
+        assign c1 = c1 | plus: 1
+    endcase
+  endfor
+  if total > 0
+    assign avg = sum | times: 1.0 | divided_by: total | round: 1
+  else
+    assign avg = 0
+  endif
+  assign avg_label = avg | append: '' | replace: '.', ','
+  assign avg_pct = avg | times: 20
+  assign per_page = section.settings.per_page | default: 17
+-%}
+
+{%- capture star_svg -%}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5l-5.9 3.1 1.2-6.5L2.5 9.5l6.6-.9z"/></svg>{%- endcapture -%}
+
+{% style %}
+  .rvs-{{ sid }} {
+    --rv-accent: {{ section.settings.accent }};
+    --rv-star: {{ section.settings.star_color }};
+    --rv-star-off: #E3E3E3;
+    --rv-text: {{ section.settings.text_color }};
+    --rv-bg: {{ section.settings.bg }};
+    --rv-card: #FFFFFF;
+    --rv-border: #ECECEC;
+    color: var(--rv-text);
+  }
+  section.rvs-{{ sid }} { background: var(--rv-bg); padding: {{ section.settings.padding_mobile }}px 0; }
+  .rvs-{{ sid }} .rv__wrap { max-width: 1200px; margin: 0 auto; padding: 0 14px; }
+
+  /* Titolo */
+  .rvs-{{ sid }} .rv__title { margin: 0; text-align: center; font-size: 22px; font-weight: 400; letter-spacing: .04em; }
+  .rvs-{{ sid }} .rv__title-line { width: 34px; height: 3px; border-radius: 2px; background: var(--rv-accent); margin: 12px auto 26px; }
+
+  /* Stelle */
+  .rvs-{{ sid }} .rv__stars { position: relative; display: inline-flex; line-height: 0; }
+  .rvs-{{ sid }} .rv__stars svg { width: var(--rv-star-size, 16px); height: var(--rv-star-size, 16px); margin-right: 2px; }
+  .rvs-{{ sid }} .rv__stars-off svg { fill: var(--rv-star-off); }
+  .rvs-{{ sid }} .rv__stars-on { position: absolute; inset: 0 auto 0 0; overflow: hidden; white-space: nowrap; display: inline-flex; }
+  .rvs-{{ sid }} .rv__stars-on svg { fill: var(--rv-star); flex: 0 0 auto; }
+
+  /* Barra riepilogo */
+  .rvs-{{ sid }} .rv__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  .rvs-{{ sid }} .rv__summary-wrap { position: relative; }
+  .rvs-{{ sid }} .rv__summary { display: inline-flex; align-items: center; gap: 10px; background: none; border: 0; padding: 4px 0; cursor: pointer; font: inherit; color: inherit; --rv-star-size: 22px; }
+  .rvs-{{ sid }} .rv__summary-avg { font-weight: 700; font-size: 17px; }
+  .rvs-{{ sid }} .rv__summary-count { font-size: 15px; }
+  .rvs-{{ sid }} .rv__chev { width: 16px; height: 16px; transition: transform .2s; }
+  .rvs-{{ sid }} .rv__summary[aria-expanded="true"] .rv__chev { transform: rotate(180deg); }
+
+  .rvs-{{ sid }} .rv__dist { position: absolute; z-index: 20; top: calc(100% + 8px); left: 0; width: min(340px, calc(100vw - 28px)); background: #fff; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.14); padding: 20px 20px 16px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .18s, transform .18s, visibility .18s; }
+  .rvs-{{ sid }} .rv__dist.is-open { opacity: 1; visibility: visible; transform: none; }
+  .rvs-{{ sid }} .rv__dist-head { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 14px; --rv-star-size: 20px; }
+  .rvs-{{ sid }} .rv__dist-avg { font-size: 34px; font-weight: 700; line-height: 1; }
+  .rvs-{{ sid }} .rv__dist-sub { text-align: center; font-size: 13px; opacity: .7; margin: -6px 0 14px; }
+  .rvs-{{ sid }} .rv__dist-row { display: grid; grid-template-columns: auto 1fr 34px; align-items: center; gap: 10px; font-size: 13px; margin: 7px 0; --rv-star-size: 13px; }
+  .rvs-{{ sid }} .rv__dist-track { height: 8px; border-radius: 99px; background: #F0F0F0; overflow: hidden; }
+  .rvs-{{ sid }} .rv__dist-fill { display: block; height: 100%; border-radius: inherit; background: var(--rv-accent); }
+  .rvs-{{ sid }} .rv__dist-n { text-align: right; opacity: .7; }
+
+  .rvs-{{ sid }} .rv__write { display: inline-flex; align-items: center; justify-content: center; padding: 11px 18px; border: 1px solid #D9D9D9; border-radius: 8px; background: #fff; color: inherit; text-decoration: none; font-size: 15px; }
+  .rvs-{{ sid }} .rv__write:hover { border-color: var(--rv-accent); color: var(--rv-accent); }
+
+  /* Griglia a colonne (masonry) */
+  .rvs-{{ sid }} .rv__grid { column-count: 2; column-gap: 10px; }
+  .rvs-{{ sid }} .rv__card { break-inside: avoid; display: block; width: 100%; margin: 0 0 10px; padding: 0; text-align: left; font: inherit; color: inherit; background: var(--rv-card); border: 1px solid var(--rv-border); border-radius: 12px; overflow: hidden; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,.04); transition: box-shadow .2s, transform .2s; }
+  .rvs-{{ sid }} .rv__card:hover { box-shadow: 0 8px 22px rgba(0,0,0,.09); transform: translateY(-2px); }
+  .rvs-{{ sid }} .rv__card[hidden] { display: none; }
+  .rvs-{{ sid }} .rv__card-media { position: relative; display: block; background: #f3f3f3; }
+  .rvs-{{ sid }} .rv__card-media img { display: block; width: 100%; height: auto; }
+  .rvs-{{ sid }} .rv__card-more { position: absolute; top: 8px; right: 8px; display: inline-flex; align-items: center; gap: 3px; padding: 3px 7px; border-radius: 99px; background: rgba(255,255,255,.92); font-size: 12px; font-weight: 700; color: #222; }
+  .rvs-{{ sid }} .rv__card-more svg { width: 13px; height: 13px; }
+  .rvs-{{ sid }} .rv__card-body { display: block; padding: 12px 12px 14px; }
+  .rvs-{{ sid }} .rv__name { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+  .rvs-{{ sid }} .rv__verified { display: inline-flex; color: var(--rv-accent); }
+  .rvs-{{ sid }} .rv__verified svg { width: 15px; height: 15px; }
+  .rvs-{{ sid }} .rv__card .rv__stars { --rv-star-size: 14px; margin-bottom: 8px; }
+  .rvs-{{ sid }} .rv__card-text { display: block; font-size: 14px; line-height: 1.5; white-space: pre-line; }
+
+  /* Pulsanti mostra / chiudi */
+  .rvs-{{ sid }} .rv__actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .rvs-{{ sid }} .rv__btn { min-width: 190px; padding: 14px 22px; border-radius: 999px; border: 2px solid var(--rv-accent); font: inherit; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+  .rvs-{{ sid }} .rv__btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+  .rvs-{{ sid }} .rv__btn--more { background: var(--rv-accent); color: #fff; }
+  .rvs-{{ sid }} .rv__btn--close { background: #fff; color: var(--rv-accent); }
+  .rvs-{{ sid }} .rv__btn[hidden] { display: none; }
+
+  /* Modale recensione */
+  .rvs-{{ sid }} .rv__modal { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.6); }
+  .rvs-{{ sid }} .rv__modal.is-open { display: flex; }
+  .rvs-{{ sid }} .rv__modal-box { position: relative; display: flex; flex-direction: column; width: 100%; height: 100%; background: #fff; overflow: hidden; }
+  .rvs-{{ sid }} .rv__modal-media { position: relative; flex: 0 0 auto; background: #f3f3f3; }
+  .rvs-{{ sid }} .rv__modal-media img { display: block; width: 100%; max-height: 62vh; object-fit: cover; }
+  .rvs-{{ sid }} .rv__modal-thumbs { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 6px; }
+  .rvs-{{ sid }} .rv__modal-thumbs button { width: 46px; height: 46px; padding: 0; border: 2px solid #fff; border-radius: 8px; overflow: hidden; cursor: pointer; opacity: .75; background: #fff; }
+  .rvs-{{ sid }} .rv__modal-thumbs button.is-active { opacity: 1; border-color: var(--rv-accent); }
+  .rvs-{{ sid }} .rv__modal-thumbs img { width: 100%; height: 100%; object-fit: cover; max-height: none; }
+  .rvs-{{ sid }} .rv__modal-body { flex: 1 1 auto; overflow-y: auto; padding: 20px 20px 28px; }
+  .rvs-{{ sid }} .rv__modal-name { display: flex; align-items: center; gap: 6px; font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+  .rvs-{{ sid }} .rv__modal-body .rv__stars { --rv-star-size: 20px; margin-bottom: 14px; }
+  .rvs-{{ sid }} .rv__modal-text { font-size: 16px; line-height: 1.6; white-space: pre-line; margin: 0; }
+  .rvs-{{ sid }} .rv__modal-date { margin-top: 14px; font-size: 13px; opacity: .6; }
+  .rvs-{{ sid }} .rv__modal-close { position: absolute; top: 12px; left: 12px; z-index: 2; width: 38px; height: 38px; border-radius: 10px; border: 0; background: rgba(60,60,60,.55); color: #fff; display: grid; place-items: center; cursor: pointer; }
+  .rvs-{{ sid }} .rv__modal-close svg { width: 18px; height: 18px; }
+  .rvs-{{ sid }} .rv__modal.no-media .rv__modal-media { display: none; }
+  .rvs-{{ sid }} .rv__modal.no-media .rv__modal-close { background: #eee; color: #333; }
+  .rvs-{{ sid }} .rv__modal.no-media .rv__modal-body { padding-top: 64px; }
+
+  /* ---------- Desktop ---------- */
+  @media (min-width: 750px) {
+    section.rvs-{{ sid }} { padding: {{ section.settings.padding_desktop }}px 0; }
+    .rvs-{{ sid }} .rv__wrap { padding: 0 40px; }
+    .rvs-{{ sid }} .rv__title { font-size: 28px; }
+    .rvs-{{ sid }} .rv__title-line { margin-bottom: 40px; }
+    .rvs-{{ sid }} .rv__grid { column-count: {{ section.settings.columns_desktop }}; column-gap: 16px; }
+    .rvs-{{ sid }} .rv__card { margin-bottom: 16px; }
+    .rvs-{{ sid }} .rv__card-body { padding: 14px 16px 18px; }
+    .rvs-{{ sid }} .rv__card-text { font-size: 15px; }
+    .rvs-{{ sid }} .rv__actions { margin-top: 26px; gap: 14px; }
+
+    .rvs-{{ sid }} .rv__modal-box { flex-direction: row; width: min(1020px, 92vw); height: min(730px, 86vh); border-radius: 14px; }
+    .rvs-{{ sid }} .rv__modal-media { flex: 0 0 55%; height: 100%; }
+    .rvs-{{ sid }} .rv__modal-media img { height: 100%; max-height: none; }
+    .rvs-{{ sid }} .rv__modal-body { padding: 40px 32px; }
+    .rvs-{{ sid }} .rv__modal-text { font-size: 18px; }
+    .rvs-{{ sid }} .rv__modal.no-media .rv__modal-box { width: min(560px, 92vw); height: auto; max-height: 86vh; }
+  }
+{% endstyle %}
+
+<section id="rv-{{ sid }}" class="rv rvs-{{ sid }}" data-rv data-per-page="{{ per_page }}">
+  <div class="rv__wrap">
+    {%- if section.settings.title != blank -%}
+      <h2 class="rv__title">{{ section.settings.title }}</h2>
+      <div class="rv__title-line"></div>
+    {%- endif -%}
+
+    {%- if total > 0 -%}
+      <div class="rv__bar">
+        <div class="rv__summary-wrap">
+          <button type="button" class="rv__summary" aria-expanded="false" data-rv-summary>
+            <span class="rv__stars" aria-label="{{ avg_label }} su 5">
+              <span class="rv__stars-off">{% for i in (1..5) %}{{ star_svg }}{% endfor %}</span>
+              <span class="rv__stars-on" style="width: {{ avg_pct }}%">{% for i in (1..5) %}{{ star_svg }}{% endfor %}</span>
+            </span>
+            <span class="rv__summary-avg">{{ avg_label }}</span>
+            <span class="rv__summary-count">{{ total }} {% if total == 1 %}recensione{% else %}recensioni{% endif %}</span>
+            <svg class="rv__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+
+          <div class="rv__dist" data-rv-dist>
+            <div class="rv__dist-head">
+              <span class="rv__stars"><span class="rv__stars-off">{{ star_svg }}</span><span class="rv__stars-on" style="width:100%">{{ star_svg }}</span></span>
+              <span class="rv__dist-avg">{{ avg_label }}</span>
+            </div>
+            <p class="rv__dist-sub">Basato su {{ total }} {% if total == 1 %}recensione{% else %}recensioni{% endif %}</p>
+            {%- assign counts = c5 | append: ',' | append: c4 | append: ',' | append: c3 | append: ',' | append: c2 | append: ',' | append: c1 | split: ',' -%}
+            {%- for n in counts -%}
+              {%- assign stars_n = 6 | minus: forloop.index -%}
+              {%- assign n_num = n | plus: 0 -%}
+              {%- assign pct = n_num | times: 100.0 | divided_by: total | round -%}
+              {%- assign star_pct = stars_n | times: 20 -%}
+              <div class="rv__dist-row">
+                <span class="rv__stars"><span class="rv__stars-off">{% for i in (1..5) %}{{ star_svg }}{% endfor %}</span><span class="rv__stars-on" style="width: {{ star_pct }}%">{% for i in (1..5) %}{{ star_svg }}{% endfor %}</span></span>
+                <span class="rv__dist-track"><span class="rv__dist-fill" style="width: {{ pct }}%"></span></span>
+                <span class="rv__dist-n">({{ n_num }})</span>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        {%- if section.settings.write_link != blank -%}
+          <a class="rv__write" href="{{ section.settings.write_link }}">{{ section.settings.write_label }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="rv__grid" data-rv-grid>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign r = block.settings.rating | plus: 0
+          assign r_pct = r | times: 20
+          assign img1 = block.settings.image
+          assign img2 = block.settings.image_2
+          assign alt = 'Recensione di ' | append: block.settings.name | escape
+        -%}
+        <button type="button" class="rv__card" data-rv-card {{ block.shopify_attributes }}
+          {% if forloop.index > per_page %}hidden{% endif %}
+          data-name="{{ block.settings.name | escape }}"
+          data-rating="{{ r }}"
+          data-verified="{{ block.settings.verified }}"
+          data-date="{{ block.settings.date | escape }}"
+          {% if img1 != blank %}data-img1="{{ img1 | image_url: width: 1200 }}"{% endif %}
+          {% if img2 != blank %}data-img2="{{ img2 | image_url: width: 1200 }}"{% endif %}>
+          {%- if img1 != blank -%}
+            <span class="rv__card-media">
+              {{ img1 | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 750px) 25vw, 50vw', alt: alt }}
+              {%- if img2 != blank -%}
+                <span class="rv__card-more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 21h12a2 2 0 002-2V7"/></svg>+1</span>
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+          <span class="rv__card-body">
+            <span class="rv__name">
+              {{ block.settings.name }}
+              {%- if block.settings.verified -%}<span class="rv__verified" title="Acquisto verificato"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.7-.9 2.9.9 2.9-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7.9-2.9-.9-2.9 2.5-1.7.9-2.9 3 .2z"/><path d="M8.5 12.3l2.3 2.3 4.7-4.8" fill="none" stroke="#fff" stroke-width="2"/></svg></span>{%- endif -%}
+            </span>
+            <span class="rv__stars" aria-label="{{ r }} su 5">
+              <span class="rv__stars-off">{% for i in (1..5) %}{{ star_svg }}{% endfor %}</span>
+              <span class="rv__stars-on" style="width: {{ r_pct }}%">{% for i in (1..5) %}{{ star_svg }}{% endfor %}</span>
+            </span>
+            <span class="rv__card-text" data-rv-text>{{ block.settings.text | escape }}</span>
+          </span>
+        </button>
+      {%- endfor -%}
+    </div>
+
+    {%- if total > per_page -%}
+      <div class="rv__actions">
+        <button type="button" class="rv__btn rv__btn--more" data-rv-more>{{ section.settings.more_label }}</button>
+        <button type="button" class="rv__btn rv__btn--close" data-rv-less hidden>{{ section.settings.less_label }}</button>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Modale {%- endcomment -%}
+  <div class="rvs-{{ sid }}" id="rvm-{{ sid }}" data-rv-portal>
+  <div class="rv__modal" data-rv-modal role="dialog" aria-modal="true" aria-label="Recensione">
+    <div class="rv__modal-box">
+      <button type="button" class="rv__modal-close" data-rv-close aria-label="Chiudi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="rv__modal-media">
+        <img alt="" width="1200" height="1200" data-rv-modal-img>
+        <div class="rv__modal-thumbs" data-rv-thumbs></div>
+      </div>
+      <div class="rv__modal-body">
+        <div class="rv__modal-name" data-rv-modal-name></div>
+        <span class="rv__stars" data-rv-modal-stars>
+          <span class="rv__stars-off">{% for i in (1..5) %}{{ star_svg }}{% endfor %}</span>
+          <span class="rv__stars-on">{% for i in (1..5) %}{{ star_svg }}{% endfor %}</span>
+        </span>
+        <p class="rv__modal-text" data-rv-modal-text></p>
+        <div class="rv__modal-date" data-rv-modal-date></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('rv-{{ sid }}');
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = '1';
+
+    var perPage = parseInt(root.dataset.perPage, 10) || 17;
+    var cards = Array.prototype.slice.call(root.querySelectorAll('[data-rv-card]'));
+    var moreBtn = root.querySelector('[data-rv-more]');
+    var lessBtn = root.querySelector('[data-rv-less]');
+    var shown = Math.min(perPage, cards.length);
+
+    /* ---- Mostra altre / Chiudi ---- */
+    var render = function () {
+      cards.forEach(function (c, i) { c.hidden = i >= shown; });
+      if (moreBtn) moreBtn.hidden = shown >= cards.length;
+      if (lessBtn) lessBtn.hidden = shown <= perPage;
+    };
+    if (moreBtn) moreBtn.addEventListener('click', function () {
+      shown = Math.min(shown + perPage, cards.length);
+      render();
+    });
+    if (lessBtn) lessBtn.addEventListener('click', function () {
+      shown = Math.min(perPage, cards.length);
+      render();
+      root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    /* ---- Tabella stelle ---- */
+    var summary = root.querySelector('[data-rv-summary]');
+    var dist = root.querySelector('[data-rv-dist]');
+    if (summary && dist) {
+      summary.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = !dist.classList.contains('is-open');
+        dist.classList.toggle('is-open', open);
+        summary.setAttribute('aria-expanded', open);
+      });
+      document.addEventListener('click', function (e) {
+        if (!dist.contains(e.target)) { dist.classList.remove('is-open'); summary.setAttribute('aria-expanded', 'false'); }
+      });
+    }
+
+    /* ---- Modale ---- */
+    // La finestra va in fondo alla pagina, così resta sopra a tutto il tema
+    var portal = root.querySelector('[data-rv-portal]');
+    var old = document.querySelectorAll('body > #rvm-{{ sid }}');
+    old.forEach(function (o) { if (o !== portal) o.remove(); });
+    document.body.appendChild(portal);
+    var modal = portal.querySelector('[data-rv-modal]');
+    var mImg = modal.querySelector('[data-rv-modal-img]');
+    var mThumbs = modal.querySelector('[data-rv-thumbs]');
+    var mName = modal.querySelector('[data-rv-modal-name]');
+    var mStars = modal.querySelector('[data-rv-modal-stars] .rv__stars-on');
+    var mText = modal.querySelector('[data-rv-modal-text]');
+    var mDate = modal.querySelector('[data-rv-modal-date]');
+    var verifiedIcon = root.querySelector('.rv__verified');
+    var lastFocus = null;
+
+    var openModal = function (card) {
+      lastFocus = card;
+      var imgs = [card.dataset.img1, card.dataset.img2].filter(Boolean);
+      modal.classList.toggle('no-media', imgs.length === 0);
+      mThumbs.innerHTML = '';
+      if (imgs.length) {
+        mImg.src = imgs[0];
+        mImg.alt = 'Foto di ' + card.dataset.name;
+        if (imgs.length > 1) {
+          imgs.forEach(function (src, i) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            if (i === 0) b.className = 'is-active';
+            b.innerHTML = '<img src="' + src + '" alt="">';
+            b.addEventListener('click', function () {
+              mImg.src = src;
+              mThumbs.querySelectorAll('button').forEach(function (x) { x.classList.remove('is-active'); });
+              b.classList.add('is-active');
+            });
+            mThumbs.appendChild(b);
+          });
+        }
+      }
+      mName.textContent = card.dataset.name;
+      if (card.dataset.verified === 'true' && verifiedIcon) mName.appendChild(verifiedIcon.cloneNode(true));
+      mStars.style.width = (parseInt(card.dataset.rating, 10) * 20) + '%';
+      mText.textContent = card.querySelector('[data-rv-text]').textContent;
+      mDate.textContent = card.dataset.date || '';
+      modal.classList.add('is-open');
+      document.documentElement.style.overflow = 'hidden';
+      modal.querySelector('[data-rv-close]').focus();
+    };
+    var closeModal = function () {
+      modal.classList.remove('is-open');
+      document.documentElement.style.overflow = '';
+      if (lastFocus) lastFocus.focus({ preventScroll: true });
+    };
+
+    cards.forEach(function (c) { c.addEventListener('click', function () { openModal(c); }); });
+    modal.querySelector('[data-rv-close]').addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal(); });
+
+    render();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Recensioni clienti",
+  "tag": "div",
+  "class": "section-recensioni",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titolo", "default": "Cosa dicono i nostri clienti" },
+    { "type": "range", "id": "per_page", "label": "Recensioni visibili all'inizio", "min": 4, "max": 30, "step": 1, "default": 17, "info": "Le altre si aprono con 'Mostra altre recensioni'" },
+    { "type": "text", "id": "more_label", "label": "Testo pulsante 'Mostra'", "default": "Mostra altre recensioni" },
+    { "type": "text", "id": "less_label", "label": "Testo pulsante 'Chiudi'", "default": "Chiudi recensioni" },
+    { "type": "text", "id": "write_label", "label": "Testo pulsante 'Scrivi'", "default": "Scrivi una recensione" },
+    { "type": "url", "id": "write_link", "label": "Link 'Scrivi una recensione'", "info": "Es. pagina contatti. Vuoto = pulsante nascosto" },
+    { "type": "range", "id": "columns_desktop", "label": "Colonne su desktop", "min": 3, "max": 5, "step": 1, "default": 4 },
+    { "type": "header", "content": "Colori" },
+    { "type": "color", "id": "accent", "label": "Colore principale (pulsanti, barre)", "default": "#1F8A5F" },
+    { "type": "color", "id": "star_color", "label": "Stelle", "default": "#F5B400" },
+    { "type": "color", "id": "text_color", "label": "Testo", "default": "#1A1A1A" },
+    { "type": "color", "id": "bg", "label": "Sfondo", "default": "#FFFFFF" },
+    { "type": "header", "content": "Spaziatura" },
+    { "type": "range", "id": "padding_mobile", "label": "Spazio sopra/sotto (mobile)", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_desktop", "label": "Spazio sopra/sotto (desktop)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Recensione",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nome cliente", "default": "Nome C." },
+        { "type": "range", "id": "rating", "label": "Stelle", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "text", "label": "Testo recensione", "default": "Scrivi qui il testo della recensione del cliente." },
+        { "type": "image_picker", "id": "image", "label": "Foto" },
+        { "type": "image_picker", "id": "image_2", "label": "Seconda foto (opzionale)" },
+        { "type": "checkbox", "id": "verified", "label": "Acquisto verificato", "default": true },
+        { "type": "text", "id": "date", "label": "Data (opzionale)", "info": "Es. 12 ottobre 2026" }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "Recensioni clienti",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}

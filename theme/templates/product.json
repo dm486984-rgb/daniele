@@ -1,0 +1,321 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "rating": {
+          "type": "rating",
+          "settings": {
+            "fallback_text": "Amato da oltre 1.000 clienti"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Breve frase sul beneficio principale.</p>"
+          }
+        },
+        "variants": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "buy": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity": true,
+            "show_dynamic_checkout": true
+          }
+        },
+        "trust": {
+          "type": "trust",
+          "settings": {
+            "line1": "Spedizione gratuita sopra i 49€",
+            "line2": "Reso gratuito entro 30 giorni",
+            "line3": "Pagamenti sicuri al 100%"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "shipping": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Spedizione e resi",
+            "content": "<p>Spediamo entro 24h. Reso gratuito entro 30 giorni.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "rating",
+        "title",
+        "price",
+        "text",
+        "variants",
+        "buy",
+        "trust",
+        "description",
+        "shipping"
+      ],
+      "settings": {
+        "sticky_atc": true
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "title": "Beneficio 1",
+            "text": "<p>Descrivi il primo beneficio.</p>"
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "heart",
+            "title": "Beneficio 2",
+            "text": "<p>Descrivi il secondo beneficio.</p>"
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "Beneficio 3",
+            "text": "<p>Descrivi il terzo beneficio.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ],
+      "settings": {
+        "heading": "Perché lo amerai",
+        "alt_bg": true
+      }
+    },
+    "video": {
+      "type": "video",
+      "settings": {
+        "heading": "Guardalo in azione",
+        "ratio": "landscape",
+        "autoplay": true,
+        "controls": false,
+        "alt_bg": false
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Quanto tempo ci mette la spedizione?",
+            "answer": "<p>Spediamo entro 24h; la consegna richiede 2-4 giorni lavorativi.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Posso restituire il prodotto?",
+            "answer": "<p>Sì, hai 30 giorni per il reso gratuito.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2"
+      ],
+      "settings": {
+        "heading": "Domande frequenti",
+        "open_first": false,
+        "alt_bg": false
+      }
+    },
+    "related": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Potrebbe piacerti anche",
+        "limit": 4,
+        "columns": 4,
+        "show_view_all": false,
+        "alt_bg": false
+      }
+    },
+    "story": {
+      "type": "product-story",
+      "blocks": {
+        "row1": {
+          "type": "row",
+          "settings": {
+            "heading": "Il tuo migliore amico sarà elegante e alla moda con la sua nuova giacca!",
+            "text_top": "<p>Proprio come la moda per noi, la giacca DoggyKings è stata creata perché il tuo cane possa essere alla moda quanto te.</p>"
+          }
+        },
+        "row2": {
+          "type": "row",
+          "settings": {
+            "text_top": "<p>Il materiale di altissima qualità che utilizziamo garantisce al tuo cane il massimo comfort.</p>",
+            "highlight": "Pettorina integrata e facile da usare.",
+            "text_bottom": "<p>La pettorina è integrata nella giacca, con robusti anelli a D per agganciare il guinzaglio: non ti servono altre pettorine o collari.</p>"
+          }
+        },
+        "row3": {
+          "type": "row",
+          "settings": {
+            "text_top": "<p>Esci al freddo con il tuo amico a quattro zampe? Basta strati su strati o pettorine da infilare nei buchi del cappotto. Con la nostra giacca: <strong>ZIP, CLIP e VIA!</strong></p>",
+            "text_bottom": "<p>La morbida fodera in pile e il collo alto regolabile bloccano il vento e tengono al caldo il tuo cane, così potete esplorare all'aperto tutto l'anno, senza eccezioni!</p>",
+            "bullets": "Pettorina riflettente integrata\nInterno caldo e imbottito\nZip facile da indossare\nIdrorepellente"
+          }
+        },
+        "sizes4": {
+          "type": "sizes",
+          "settings": {}
+        },
+        "cta5": {
+          "type": "cta",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "row1",
+        "row2",
+        "row3",
+        "sizes4",
+        "cta5"
+      ],
+      "settings": {}
+    },
+    "ugc_videos": {
+      "type": "video-carousel",
+      "blocks": {
+        "v1": {
+          "type": "video",
+          "settings": {}
+        },
+        "v2": {
+          "type": "video",
+          "settings": {}
+        },
+        "v3": {
+          "type": "video",
+          "settings": {}
+        },
+        "v4": {
+          "type": "video",
+          "settings": {}
+        },
+        "v5": {
+          "type": "video",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4",
+        "v5"
+      ],
+      "settings": {}
+    },
+    "story2": {
+      "type": "product-story-2",
+      "blocks": {
+        "row1": {
+          "type": "row",
+          "settings": {
+            "heading": "Il tuo cane merita il meglio!\nMerita di sentirsi al caldo, alla moda e coccolato quest'inverno!",
+            "subheading": "Affidati alla migliore giacca invernale per cani!"
+          }
+        },
+        "row2": {
+          "type": "row",
+          "settings": {
+            "text": "<p>La giacca 3 in 1 Zampa&Co aiuterà il tuo cane a stare comodo, al caldo e al sicuro quest'inverno! Comfort, sicurezza e stile sono i punti di forza della giacca 3 in 1 Zampa&Co.</p>",
+            "circle": true,
+            "caption_title": "Protezione da pioggia e vento",
+            "caption_text": "<p>Resistente all'acqua e al vento per proteggere il tuo cane in ogni stagione.</p>"
+          }
+        },
+        "row3": {
+          "type": "row",
+          "settings": {
+            "text": "<p>La giacca offre una protezione completa dalle intemperie. È antivento e idrorepellente, così il tuo cane resterà asciutto tutto il giorno, qualunque tempo faccia fuori, grazie alla sua superficie impermeabile. La giacca copre tutto il corpo del cane, pancia compresa.</p>",
+            "circle": true,
+            "caption_title": "Interno caldo in pile",
+            "caption_text": "<p>La morbida fodera in pile e il collo alto tengono il tuo cane al caldo anche nelle giornate più fredde.</p>"
+          }
+        },
+        "sizes4": {
+          "type": "sizes",
+          "settings": {}
+        },
+        "closing5": {
+          "type": "closing",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "row1",
+        "row2",
+        "row3",
+        "sizes4",
+        "closing5"
+      ],
+      "settings": {}
+    },
+    "recensioni": {
+      "type": "recensioni",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {}
+        },
+        "r2": {
+          "type": "review",
+          "settings": {}
+        },
+        "r3": {
+          "type": "review",
+          "settings": {}
+        },
+        "r4": {
+          "type": "review",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "story",
+    "story2",
+    "ugc_videos",
+    "benefits",
+    "video",
+    "recensioni",
+    "faq",
+    "related"
+  ]
+}

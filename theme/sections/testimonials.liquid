@@ -1,0 +1,47 @@
+<section class="section testimonials{% if section.settings.alt_bg %} section--alt{% endif %}">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}<h2 class="section__title text-center">{{ section.settings.heading }}</h2>{%- endif -%}
+    {%- if section.settings.subheading != blank -%}<p class="section__subtitle text-center">{{ section.settings.subheading }}</p>{%- endif -%}
+    <div class="testimonials__grid">
+      {%- for block in section.blocks -%}
+        <figure class="testimonial" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'testimonial__image' }}
+          {%- endif -%}
+          <span class="stars" aria-label="{{ block.settings.rating }}/5">{% for i in (1..block.settings.rating) %}{% render 'icon', icon: 'star' %}{% endfor %}</span>
+          <blockquote class="testimonial__quote">{{ block.settings.quote }}</blockquote>
+          <figcaption class="testimonial__author">
+            <strong>{{ block.settings.author }}</strong>
+            {%- if block.settings.verified -%}<span class="testimonial__verified">{% render 'icon', icon: 'check' %} Acquisto verificato</span>{%- endif -%}
+          </figcaption>
+        </figure>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Recensioni",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titolo", "default": "Cosa dicono i clienti" },
+    { "type": "text", "id": "subheading", "label": "Sottotitolo" },
+    { "type": "checkbox", "id": "alt_bg", "label": "Sfondo alternativo", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Recensione",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Foto (opzionale)" },
+        { "type": "range", "id": "rating", "label": "Stelle", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "quote", "label": "Recensione", "default": "Inserisci qui una recensione reale di un cliente." },
+        { "type": "text", "id": "author", "label": "Nome cliente", "default": "Nome C." },
+        { "type": "checkbox", "id": "verified", "label": "Acquisto verificato", "default": true }
+      ]
+    }
+  ],
+  "max_blocks": 9,
+  "presets": [{ "name": "Recensioni", "blocks": [ { "type": "testimonial" }, { "type": "testimonial" }, { "type": "testimonial" } ] }]
+}
+{% endschema %}
