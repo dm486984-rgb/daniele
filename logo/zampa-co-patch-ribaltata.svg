@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <!-- arco superiore: testo da sinistra a destra, lettere verso l'esterno -->
+    <path id="arcTop" d="M 150 500 A 350 350 0 0 1 850 500"/>
+    <!-- arco inferiore: continua il giro del cerchio (scritta ribaltata) -->
+    <path id="arcBottom" d="M 850 500 A 350 350 0 0 1 150 500"/>
+  </defs>
+  <!-- disco nero -->
+  <circle cx="500" cy="500" r="490" fill="#111"/>
+  <!-- anello bianco esterno -->
+  <circle cx="500" cy="500" r="462" fill="none" stroke="#fff" stroke-width="14"/>
+  <!-- anello bianco interno -->
+  <circle cx="500" cy="500" r="300" fill="none" stroke="#fff" stroke-width="12"/>
+
+  <!-- scritta sopra -->
+  <text font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" font-size="82" fill="#fff" letter-spacing="8">
+    <textPath href="#arcTop" startOffset="50%" text-anchor="middle">ZAMPA &amp; CO.</textPath>
+  </text>
+  <!-- scritta sotto (ribaltata, continua il giro) -->
+  <text font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" font-size="82" fill="#fff" letter-spacing="8">
+    <textPath href="#arcBottom" startOffset="50%" text-anchor="middle">ZAMPA &amp; CO.</textPath>
+  </text>
+
+  <!-- stelline ai lati -->
+  <g fill="#fff">
+    <path transform="translate(120 500) scale(2.2)" d="M0 -12 L3.5 -3.7 12.4 -3.7 5.2 1.6 7.9 10.2 0 5 -7.9 10.2 -5.2 1.6 -12.4 -3.7 -3.5 -3.7Z"/>
+    <path transform="translate(880 500) scale(2.2)" d="M0 -12 L3.5 -3.7 12.4 -3.7 5.2 1.6 7.9 10.2 0 5 -7.9 10.2 -5.2 1.6 -12.4 -3.7 -3.5 -3.7Z"/>
+  </g>
+
+  <!-- zampa al centro -->
+  <g fill="#fff">
+    <ellipse cx="500" cy="560" rx="112" ry="92"/>
+    <ellipse cx="392" cy="452" rx="44" ry="56" transform="rotate(-22 392 452)"/>
+    <ellipse cx="460" cy="398" rx="44" ry="58" transform="rotate(-6 460 398)"/>
+    <ellipse cx="540" cy="398" rx="44" ry="58" transform="rotate(6 540 398)"/>
+    <ellipse cx="608" cy="452" rx="44" ry="56" transform="rotate(22 608 452)"/>
+  </g>
+</svg>
